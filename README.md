@@ -24,7 +24,8 @@ Mascotita/
 |   |           └── 10. Consulta de Paquetes
 |   |           └── 11. Consulta de Adopciones
 |   |           └── 12. Consulta de veterinarios
-|   |           └── 13. Escritura a archivo de citas, dar opción todas o de una fecha en |   | |   |                   específico.
+|   |           └── 13. Escritura a archivo de citas, dar opción todas o de una fecha en
+|   |                   específico.
 │   ├── modelo/                      ← Clases del modelo de datos
 │   │   ├── Cliente.java
 │   │   ├── Mascota.java
