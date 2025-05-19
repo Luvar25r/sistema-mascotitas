@@ -2,7 +2,7 @@
 Una cadena de tiendas de mascotas y veterinarios desean llevar el control de sus ventas de  productos, adopciones de clientes y consultas médicas, vacunación o servicios de higiene  programadas a domicilio-
 
 ## Estructura sin herencia:
-
+```
 Mascotita/
 ├── src/
 │   ├── app/                         ← Clase principal y menú
@@ -41,3 +41,4 @@ Mascotita/
 │
 ├── README.txt
 └── Mascotita.zip                   ← Archivo a entregar con todo incluido
+```
