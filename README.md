@@ -65,6 +65,15 @@ Mascotita/
 ---------------------------------------------------
 ```
 
+
+
+
+
+
+
+
+---------------------------------
+```
 //Enum Sucursal
 //*Nombre de la sucursal (establecido por el gerente)
 //*Zonas manejadas
@@ -177,4 +186,4 @@ Union de opciones del menu:
         *Codigo de sucursal /PK
         *Zona de sucursal
     *Consulta de sucursales
-
+```
