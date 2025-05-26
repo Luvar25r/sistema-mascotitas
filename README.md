@@ -20,7 +20,7 @@ Mascotita/
 |   |                  └── Esterilización
 |   |                  //Pregunta de si los paquetes ya estan preestablecidos o
 |   |                    se debe agregar una opcion para crear paquetes personalizados.
-|   |           └── 7. Adopción o donacion de mascotas
+|   |           └── 7. Adopción o devolucion de mascotas
 |   |           └── 8. Pago de paquetes
 |   |           └── 9. Consulta de citas de veterinarios
 |   |           └── 10. Consulta de Paquetes
@@ -40,7 +40,7 @@ Mascotita/
 │   │   ├── Tarjeta.java
 │   │   ├── Cita.java
 │   │   ├── Paquete.java
-│   │   └── Adopcion.java (si manejas una clase aparte para esto)
+│   │   └── Adopcion.java 
 │   │
 │   ├── excepciones/                ← Excepciones personalizadas
 │   │   ├── CitaOcupadaException.java
@@ -74,6 +74,9 @@ Mascotita/
 
 ---------------------------------
 ```
+
+#Nota: Los "Paquetes", se llaman "Servicios" en este sistema.
+
 //Enum Sucursal
 //*Nombre de la sucursal (establecido por el gerente)
 //*Zonas manejadas
@@ -93,6 +96,53 @@ Mascotita/
 *Vacunas aplicadas (Arreglo String)
 //---> En A/E/B
 
+//Informacion que va a contener la clase Servicios (uno a varios):
+  *Cortes 
+        Verificaciones necesarias para agendar citas (interface revisiondeCitas):
+            -Mascota Vacunada : Necesario
+            -Veterinario: No necesario
+            -Asistente: Necesario
+        Con Override todo esto en la interface.
+  *Baño
+        Verificaciones necesarias para agendar citas:
+            -Mascota Vacunada : Necesario
+            -Veterinario: No necesario
+            -Asistente: Necesario
+  *Desparasitacion
+        Verificaciones necesarias para agendar citas:
+            -Mascota Vacunada : Necesario
+            -Veterinario: Necesario
+            -Asistente: No necesario
+  *Esterilizacion
+        Verificaciones necesarias para agendar citas:
+            -Mascota Vacunada : Necesario
+            -Veterinario: Necesario
+            -Asistente: Necesario
+  *Vacunacion
+        Verificaciones necesarias para agendar citas:
+            -Mascota Vacunada : No necesario
+            -Veterinario: Necesario
+            -Asistente: No necesario
+  *Consultas medicas
+        Verificaciones necesarias para agendar citas:
+            -Mascota Vacunada : No necesario
+            -Veterinario: Necesario
+            -Asistente: No necesario
+//
+
+//Informacion que va a contener la clase Cita:
+    *Datos de cada cita:
+            * Numero de cita (int)
+            * Fecha y hora de cita (Date)
+            * Cliente (Cliente)
+            * Mascota (Mascota)
+            * Servicios contratados (Arreglo):  (Dependiendo de los que incluya, se asigna:)
+
+                *Veterinario (Veterinario)
+                * y/o Asistente de Personal (Asistente)
+                * Descripcion de servicio (String)
+    
+
 Union de opciones del menu:
 1. Alta / Baja / Edicion de informacion de Cliente o Mascota
     *Cliente
@@ -110,22 +160,23 @@ Union de opciones del menu:
         -Alta  
         -Baja  
         -Edicion de informacion
-   //Informacion que va a contener clase Mascota:
-   *Nombre (String)
-   *Raza (String)
-   *Numero de Mascota (int)
-   *Vacunas aplicadas (Arreglo String)
-   //
+        //Se hereda desde la superclase Mascota
 
+------------------------------------
 2. Alta / Baja /Edicion de Personal
     *Veterinario
         -A/B/E
+        Orden:
+            *A-z (Ascendente por nombre de veterinario)
+            *Z-A (Descendente por nombre de veterinario)
         
         //Se hereda desde la superclase Persona a clase Veterinario que va a contener:
           *Numero de cedula de veterinario (int) (atributo)
          
     *Asistente Personal
         -A/B/E
+        //Se hereda desde la superclase Persona a clase Asistente que va a contener:
+            *ID de Asistente (int) (atributo)
     *Gerente
         -A/B/E
         
@@ -133,51 +184,104 @@ Union de opciones del menu:
           *Tiene la sucursal (boolean) (atributo)  en caso de true (mostrar sucursal de tipo Sucursal)
           *Número de gerente (int)
 
+--------------------------
 3. Administracion de Citas
     *Registrar de cita de veterinarios a domicilio
-       //Datos de cada cita:
-            * Numero de cita (int)
-            * Fecha y hora de cita (Date)
+       *Registrar los datos de clase Cita (los datos estan guardados de forma temporal adentro de esta clase)
+       * Uso de la interface revisionDeCitas(servicio) (Dependiendo del servicio, las verificaciones necesarias).
+            * veterinarioDisponible (boolean)
+                - En caso de que no haya veterinarios disponibles lanzar excepcion "No hay veterinarios disponibles"
+            * asistenteDisponible (boolean)
+                - En caso de que no haya asistentes disponibles lanzar excepcion "No hay veterinarios disponibles"
+            * mascotaVacunada (boolean)
+                - En caso de que no haya veterinarios disponibles lanzar excepcion "No hay veterinarios disponibles"
+            * revisarDisponibilidad (boolean) OBLIGATORIA
                 - Verificar que la fecha y hora de cita no existen en el sistema todavia,
                   en caso contrario lanzar excepcion "No puede agendar la cita, ya se
                   encuentra ocupada”.
-            * Cliente (Cliente)
-            * Mascota (Mascota)
-            * Servicio o paquetes contratados (Arreglo):  (Dependiendo de los que incluya, se asigna:)
+                  
+       *Si se cumplen todas las condiciones necesarias, guardar informacion de Cita en Citas Agendadas.
+       *Cuando CURRENT_TIME (Tiempo actual) sea despues de una Cita Agendada, mover la informacion de Cita Agendada a  
+       registro de Citas Pasadas.
 
-                *Veterinario (Veterinario)
-                * y/o Asistente de Personal (Asistente)
-                * Descripcion de servicio (String)
-
-                                                         //Tipo de servicio(uno a varios)
-                                                          *Cortes
-                                                          *Baño
-                                                          *Desparasitacion
-                                                          *Esterilizacion
-                                                          *Vacunacion
-                                                          *Consultas medicas
-                                                        ///
-
-    *Consulta de citas activas
+    *Consulta de Citas Agendadas:
+        Orden predeterminado:
+            *Fecha mas cercana
+      
     *Registro de citas pasadas
+        Metodos:
+        - Generar listado de todas las citas y preguntar el orden por: (Usar Comparable o Comparator)
+            * Fecha
+                o Mas reciente
+                o Mas antigua
+            * Nombre del cliente
+                o A-Z
+                o Z-A
+            * Apellido Paterno
+                o A-Z
+                o Z-A
+            * Apellido Materno
+                o A-Z
+                o Z-A
+        - Preguntar si se desea descargar el listado en archivo (con java.io)
+            *Nombre predeterminado de archivo: 01012000_RegistroCitasMascotitas_[Orden seleccionado].csv o .txt
+            
 
-4. Administracion de Productos
-    *Consulta de lista de productos
-    *A/E/B de productos
-    *Registrar nueva venta
-        *Lugar de la venta
-            *A domicilio
-            *En sucursal
-    *Registro de ventas pasadas 
-
-5. Administracion de Paquetes
-    *Pago de paquetes
-    *Creacion / Edicion de paquetes
-    *Consulta de paquetes disponibles
+5. Administracion de Productos y Servicios
+   
+    *Pago de productos y/o servicios
+        * FK -> Numero de cliente (Cliente)
+        * Se le asigna Tarjeta (atributo)
+            * Numero de Tarjeta (long) (aleatorio) [19 tamaño] Implementar con algoritmo de Luhn.
+            * Fecha de vencimiento (Date)
+            * numero CVC (short) [4 tamaño]
+            * Cargo = sumatoria de cada producto o servicios contratado. (double).
+    
+    *Creacion / Edicion / Eliminacion de productos
+    *Creacion / Edicion / Eliminacion de servicios
+    
+    *Consulta de lista de productos disponibles:
+        *Nombre
+        *ID de producto
+        Orden:
+            *0-9 (Ascendente por ID de producto)
+            *9-0 (Descendente por ID de producto)
+            *A-Z (Ascendente por Nombre de producto)
+            *Z-A (Descendente por Nombre de producto)
+            
+    *Consulta de Servicios disponibles:
+        Servicios predeterminados:
+            //Hereda de Servicios (global)
+            
+    * Registro de ventas pasadas
+        Orden:
+            *A-Z (Ascendente por Nombre de producto o servicio)
+            *Z-A (Descendente por Nombre de producto o servicio)
 
 6. Administracion de Adopcion de Mascotas
-    *Registro de Adopciones
-    *Consulta de Mascotas Donadas
+    *Coleccion de mascotas disponibles para adopcion
+        Metodos:
+        - Elegir mascota para adopcion
+            - Verificar vacunas aplicadas
+                if Vacunas suministradas esta vacio, entonces:
+                Lanzar excepcion "La mascota no tiene vacunas suministradas y no es apta para su adopcion."
+                regresar al menu de seleccion de mascotas disponibles
+        
+    *Registro de Adopciones hechas
+        Se guarda:
+        * Llave (cliente)
+        * Valor (mascota) (Este se transfiere de la Coleccion de Mascotas).
+        Orden:
+            *0-9 (Ascendente por llave de cliente)
+            *9-0 (Descendente por llave de cliente)
+            *A-Z (Ascendente por nombre de mascota)
+            *Z-A (Descendente por nombre de mascota)
+    *Consulta de Mascotas devueltas
+        Atributos:
+        * Lesiones en la mascota (boolean)
+            Metodos:
+            - Cargo por maltrato
+            - Sugerir llamada a la Brigada de Vigilancia Animal (BVA) - 55 5208 9898
 
 7. Administracion de Sucursales
     *A/E/B de Sucursal
