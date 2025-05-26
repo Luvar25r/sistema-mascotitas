@@ -183,6 +183,7 @@ Union de opciones del menu:
         //Se hereda desde la superclase Persona a clase Gerente que va a contener:
           *Tiene la sucursal (boolean) (atributo)  en caso de true (mostrar sucursal de tipo Sucursal)
           *Número de gerente (int)
+          *
 
 --------------------------
 3. Administracion de Citas
