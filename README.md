@@ -8,11 +8,11 @@ Mascotita/
 │   ├── app/                         ← Clase principal y menú
 │   │   └── Main.java
 │   │       └── Métodos (Opciones del menú):
-|   |           └── 1. Alta de cliente. ya
-|   |           └── 2. Alta de mascota. ya
-|   |           └── 3. Alta y Baja de veterinarios o asistente personal. ya
-|   |           └── 4. Alta de gerente en sucursal. ya
-|   |           └── 5. Registro de citas de veterinarios a domicilio. ya
+|   |           └── 1. Alta de cliente. 
+|   |           └── 2. Alta de mascota. 
+|   |           └── 3. Alta y Baja de veterinarios o asistente personal. 
+|   |           └── 4. Alta de gerente en sucursal. 
+|   |           └── 5. Registro de citas de veterinarios a domicilio. 
 |   |           └── 6. Alta de paquetes / editar paquetes
 |   |                  └── Cortes
 |   |                  └── Baño
