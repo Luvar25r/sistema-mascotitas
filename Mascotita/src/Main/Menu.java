@@ -1,6 +1,8 @@
 package Main;
 
 import java.util.Scanner;
+
+import modulos.*;
 public class Menu {
     public static void main(String[] args) {
         MenuManager menu = new MenuManager();
