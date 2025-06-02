@@ -9,6 +9,7 @@ import util.GestorArchivos;
 import utils.OrdenadorBase;
 import java.util.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class AdministracionCitas {
     private CitaDAO citaDAO;
@@ -19,21 +20,24 @@ public class AdministracionCitas {
 
     public void registrarCita(Cita cita, String tipoServicio) throws CitaOcupadaException {
         RevisionDeCitas revision = obtenerRevisionPorServicio(tipoServicio);
+        
+        // Convertir LocalDateTime a Date para compatibilidad
+        Date fechaHoraDate = Date.from(cita.getFechaHora().atZone(ZoneId.systemDefault()).toInstant());
 
-        if (!revision.revisarDisponibilidad(cita.getFechaHora())) {
+        if (!revision.revisarDisponibilidad(fechaHoraDate)) {
             throw new CitaOcupadaException("No puede agendar la cita, ya se encuentra ocupada");
         }
 
-        if (revision.requiereVeterinario() && !revision.veterinarioDisponible()) {
-            throw new NoHayVeterinariosException("No hay veterinarios disponibles");
+        if (revision.requiereVeterinario() && !revision.veterinarioDisponible(cita.getVeterinario(), fechaHoraDate)) {
+            throw new RuntimeException("No hay veterinarios disponibles");
         }
 
-        if (revision.requiereAsistente() && !revision.asistenteDisponible()) {
-            throw new NoHayAsistentesException("No hay asistentes disponibles");
+        if (revision.requiereAsistente() && !revision.asistenteDisponible(cita.getAsistente(), fechaHoraDate)) {
+            throw new RuntimeException("No hay asistentes disponibles");
         }
 
         if (revision.requiereVacunas() && !revision.mascotaVacunada(cita.getMascota())) {
-            throw new MascotaSinVacunasException("La mascota debe estar vacunada para este servicio");
+            throw new RuntimeException("La mascota debe estar vacunada para este servicio");
         }
 
         citaDAO.guardarCita(cita);
@@ -90,24 +94,16 @@ public class AdministracionCitas {
 
     private RevisionDeCitas obtenerRevisionPorServicio(String tipoServicio) {
         switch(tipoServicio.toLowerCase()) {
-            case "corte":
-                return new ServicioCorte();
             case "baño":
             case "banio":
-                return new ServicioBanio();
-            case "desparasitacion":
-            case "desparasitación":
-                return new ServicioDesparasitacion();
-            case "esterilizacion":
-            case "esterilización":
-                return new ServicioEsterilizacion();
+                return new Banio();
             case "vacunacion":
             case "vacunación":
-                return new ServicioVacunacion();
+                return new Vacunacion();
             case "consulta":
             case "consulta medica":
             case "consulta médica":
-                return new ServicioConsultaMedica();
+                return new ConsultaMedica();
             default:
                 throw new IllegalArgumentException("Tipo de servicio no reconocido: " + tipoServicio);
         }

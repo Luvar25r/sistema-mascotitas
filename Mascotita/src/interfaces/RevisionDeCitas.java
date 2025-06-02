@@ -1,17 +1,19 @@
 package interfaces;
 
 import modelo.Mascota;
-import java.time.LocalDateTime;
+import modelo.Veterinario;
+import modelo.Asistente;
+import java.util.Date;
 
+/**
+ * Interface para verificaciones necesarias al agendar citas
+ */
 public interface RevisionDeCitas {
-    boolean veterinarioDisponible();
-    boolean asistenteDisponible();
+    boolean veterinarioDisponible(Veterinario veterinario, Date fechaHora);
+    boolean asistenteDisponible(Asistente asistente, Date fechaHora);
     boolean mascotaVacunada(Mascota mascota);
-    boolean revisarDisponibilidad(LocalDateTime fechaHora);
-
-    // Métodos auxiliares para verificar requisitos
+    boolean revisarDisponibilidad(Date fechaHora); // Obligatorio
     boolean requiereVeterinario();
     boolean requiereAsistente();
     boolean requiereVacunas();
-
 }

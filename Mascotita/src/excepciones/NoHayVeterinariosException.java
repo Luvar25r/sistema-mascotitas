@@ -1,7 +1,7 @@
 package excepciones;
 
-public class NoHayVeterinariosException extends RuntimeException {
-    public NoHayVeterinariosException(String message) {
-        super(message);
+public class NoHayVeterinariosException extends Exception {
+    public NoHayVeterinariosException(String mensaje) {
+        super(mensaje);
     }
 }

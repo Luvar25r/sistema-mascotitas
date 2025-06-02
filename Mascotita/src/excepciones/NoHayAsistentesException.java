@@ -1,7 +1,7 @@
 package excepciones;
 
-public class NoHayAsistentesException extends RuntimeException {
-    public NoHayAsistentesException(String message) {
-        super(message);
+public class NoHayAsistentesException extends Exception {
+    public NoHayAsistentesException(String mensaje) {
+        super(mensaje);
     }
 }

@@ -1,7 +1,7 @@
 package excepciones;
 
-public class MascotaSinVacunasException extends RuntimeException {
-    public MascotaSinVacunasException(String message) {
-        super(message);
+public class MascotaSinVacunasException extends Exception {
+    public MascotaSinVacunasException(String mensaje) {
+        super(mensaje);
     }
 }

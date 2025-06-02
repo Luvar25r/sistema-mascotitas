@@ -78,7 +78,6 @@ public class OrdenadorBase {
      */
     public static <T> Comparator<T> crearComparadorStringInsensitive(
             Function<T, String> keyExtractor, boolean ascendente) {
-
         Comparator<T> comparator = Comparator.comparing(
             keyExtractor, String.CASE_INSENSITIVE_ORDER
         );

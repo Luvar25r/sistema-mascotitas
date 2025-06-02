@@ -1,52 +1,47 @@
 package modelo;
 
-public class Mascota {
-    private String nombre;
-    private String raza;
-    private int numeroMascota;
-    private String[] vacunasAplicadas;
+import java.util.List;
+import java.util.ArrayList;
 
-    public Mascota(String nombre, String raza, int numeroMascota) {
+public class Mascota {
+    private String id;
+    private String nombre;
+    private List<String> vacunas;
+
+    public Mascota(String id, String nombre) {
+        this.id = id;
         this.nombre = nombre;
-        this.raza = raza;
-        this.numeroMascota = numeroMascota;
-        this.vacunasAplicadas = new String[0];
+        this.vacunas = new ArrayList<>();
     }
 
-    // Getters y setters
+    public String getId() {
+        return id;
+    }
+
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public List<String> getVacunas() {
+        return vacunas;
     }
 
-    public String getRaza() {
-        return raza;
+    public void agregarVacuna(String vacuna) {
+        if (!vacunas.contains(vacuna)) {
+            vacunas.add(vacuna);
+        }
     }
 
-    public void setRaza(String raza) {
-        this.raza = raza;
+    @Override 
+    public String toString() {
+        return "Mascota{id='" + id + "', nombre='" + nombre + "', vacunas=" + vacunas + "}";
     }
 
-    public int getNumeroMascota() {
-        return numeroMascota;
-    }
-
-    public void setNumeroMascota(int numeroMascota) {
-        this.numeroMascota = numeroMascota;
-    }
-
-    public String[] getVacunasAplicadas() {
-        return vacunasAplicadas;
-    }
-
-    public void setVacunasAplicadas(String[] vacunasAplicadas) {
-        this.vacunasAplicadas = vacunasAplicadas;
+    public boolean isVacunada() {
+        return this.vacunas != null && !this.vacunas.isEmpty();
     }
 
     public boolean tieneVacunas() {
-        return vacunasAplicadas != null && vacunasAplicadas.length > 0;
+        return isVacunada();
     }
 }

@@ -1,40 +1,67 @@
 package modelo;
 
-import interfaces.RevisionDeCitas;
+import java.time.LocalDateTime;
 
-public abstract class Servicio implements RevisionDeCitas {
+/**
+ * Clase base para todos los servicios del sistema
+ */
+public abstract class Servicio implements Comparable<Servicio>, interfaces.RevisionDeCitas {
     protected String nombre;
-    protected String descripcion;
     protected double precio;
+    protected String descripcion;
 
     public Servicio(String nombre, String descripcion, double precio) {
         this.nombre = nombre;
-        this.descripcion = descripcion;
         this.precio = precio;
-    }
-
-    // Getters y setters
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    public double getPrecio() {
-        return precio;
+    // Getters y Setters
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public double getPrecio() { return precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
+
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    @Override
+    public int compareTo(Servicio otro) {
+        return this.nombre.compareTo(otro.nombre);
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    @Override
+    public String toString() {
+        return "Servicio{" +
+                "nombre='" + nombre + '\'' +
+                ", precio=" + precio +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
     }
+
+    // Métodos abstractos adicionales requeridos por las implementaciones
+    public abstract boolean veterinarioDisponible();
+    public abstract boolean asistenteDisponible();
+    public abstract boolean requiereVeterinario();
+    public abstract boolean requiereAsistente();
+    public abstract boolean requiereVacunas();
+
+    @Override
+    public boolean veterinarioDisponible(modelo.Veterinario veterinario, java.util.Date fechaHora) {
+        return veterinarioDisponible();
+    }
+
+    @Override
+    public boolean asistenteDisponible(modelo.Asistente asistente, java.util.Date fechaHora) {
+        return asistenteDisponible();
+    }
+
+    @Override
+    public boolean revisarDisponibilidad(java.util.Date fechaHora) {
+        return revisarDisponibilidad(java.time.LocalDateTime.ofInstant(
+            fechaHora.toInstant(), java.time.ZoneId.systemDefault()));
+    }
+
+    public abstract boolean revisarDisponibilidad(LocalDateTime fechaHora);
 }
