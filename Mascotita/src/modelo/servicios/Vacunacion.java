@@ -47,7 +47,12 @@ public class Vacunacion extends Servicio implements RevisionDeCitas {
     }
 
     @Override
-    public boolean asistenteDisponible() {
+    public boolean mascotaVacunada() {
+        return false;
+    }
+
+    @Override
+    public boolean revisarDisponibilidad() {
         return false;
     }
 

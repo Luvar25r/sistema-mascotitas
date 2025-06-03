@@ -5,6 +5,7 @@ import modelo.Mascota;
 import modelo.Veterinario;
 import modelo.Asistente;
 import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Banio implements RevisionDeCitas {
     private String descripcion;
@@ -30,7 +31,22 @@ public class Banio implements RevisionDeCitas {
         // Para baño, se requiere que la mascota esté vacunada
         return mascota != null && mascota.isVacunada();
     }
-    
+
+    @Override
+    public boolean veterinarioDisponible() {
+        return false;
+    }
+
+    @Override
+    public boolean mascotaVacunada() {
+        return true;
+    }
+
+    @Override
+    public boolean revisarDisponibilidad() {
+        return false;
+    }
+
     @Override
     public boolean revisarDisponibilidad(Date fechaHora) {
         // Método obligatorio para verificar disponibilidad general
@@ -44,12 +60,12 @@ public class Banio implements RevisionDeCitas {
 
     @Override
     public boolean requiereAsistente() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean requiereVacunas() {
-        return false;
+        return true;
     }
 
     public String getDescripcion() {
@@ -60,5 +76,10 @@ public class Banio implements RevisionDeCitas {
         if (descripcion != null && !descripcion.trim().isEmpty()) {
             this.descripcion = descripcion;
         }
+    }
+
+    @Override
+    public boolean revisarDisponibilidad(LocalDateTime fechaHora) {
+        return fechaHora != null && fechaHora.isAfter(LocalDateTime.now());
     }
 }

@@ -1,9 +1,11 @@
 package utils;
 
+import modelo.Asistente;
 import modelo.Mascota;
 import modelo.Servicio;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ServicioCRUD extends OperacionesCRUD<Servicio> {
     
@@ -71,7 +73,7 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
                 }
 
                 @Override
-                public boolean asistenteDisponible() {
+                public boolean asistenteDisponible(Asistente asistente, Date fechaHoraDate) {
                     return false;
                 }
 
@@ -141,7 +143,7 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
                 }
 
                 @Override
-                public boolean asistenteDisponible() {
+                public boolean asistenteDisponible(Asistente asistente, Date fechaHoraDate) {
                     return false;
                 }
 

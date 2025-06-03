@@ -1,8 +1,10 @@
 package modelo.servicios;
 
+import modelo.Asistente;
 import modelo.Mascota;
 import modelo.Servicio;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ServicioCorte extends Servicio {
 
@@ -17,9 +19,19 @@ public class ServicioCorte extends Servicio {
     }
 
     @Override
-    public boolean asistenteDisponible() {
+    public boolean asistenteDisponible(Asistente asistente, Date fechaHoraDate) {
         // Implementación para verificar disponibilidad de asistentes
         return true; // Placeholder
+    }
+
+    @Override
+    public boolean mascotaVacunada() {
+        return false;
+    }
+
+    @Override
+    public boolean revisarDisponibilidad() {
+        return false;
     }
 
     @Override

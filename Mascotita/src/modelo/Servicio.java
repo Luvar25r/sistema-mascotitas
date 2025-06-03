@@ -1,11 +1,15 @@
 package modelo;
 
+import interfaces.RevisionDeCitas;
+
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * Clase base para todos los servicios del sistema
  */
-public abstract class Servicio implements Comparable<Servicio>, interfaces.RevisionDeCitas {
+public abstract class Servicio implements Comparable<Servicio>, RevisionDeCitas {
     protected String nombre;
     protected double precio;
     protected String descripcion;
@@ -42,26 +46,31 @@ public abstract class Servicio implements Comparable<Servicio>, interfaces.Revis
 
     // Métodos abstractos adicionales requeridos por las implementaciones
     public abstract boolean veterinarioDisponible();
-    public abstract boolean asistenteDisponible();
+    public abstract boolean asistenteDisponible(Asistente asistente, Date fechaHoraDate);
     public abstract boolean requiereVeterinario();
     public abstract boolean requiereAsistente();
     public abstract boolean requiereVacunas();
 
-    @Override
-    public boolean veterinarioDisponible(modelo.Veterinario veterinario, java.util.Date fechaHora) {
+    public boolean veterinarioDisponible(Veterinario veterinario, Date fechaHora) {
         return veterinarioDisponible();
     }
 
-    @Override
-    public boolean asistenteDisponible(modelo.Asistente asistente, java.util.Date fechaHora) {
-        return asistenteDisponible();
+    public boolean revisarDisponibilidad(Date fechaHora) {
+        return revisarDisponibilidad(LocalDateTime.ofInstant(
+            fechaHora.toInstant(), ZoneId.systemDefault()));
     }
 
-    @Override
-    public boolean revisarDisponibilidad(java.util.Date fechaHora) {
-        return revisarDisponibilidad(java.time.LocalDateTime.ofInstant(
-            fechaHora.toInstant(), java.time.ZoneId.systemDefault()));
-    }
+    public abstract boolean mascotaVacunada(Mascota mascota);
 
     public abstract boolean revisarDisponibilidad(LocalDateTime fechaHora);
+
+    @Override
+    public boolean revisarDisponibilidad() {
+        return revisarDisponibilidad(LocalDateTime.now());
+    }
+
+    @Override
+    public boolean mascotaVacunada() {
+        return false;
+    }
 }

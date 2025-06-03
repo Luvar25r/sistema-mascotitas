@@ -37,16 +37,22 @@ public class ConsultaMedica extends Servicio implements RevisionDeCitas {
 
     @Override
     public boolean revisarDisponibilidad(LocalDateTime fechaHora) {
-        return false;
+        return fechaHora != null && fechaHora.isAfter(LocalDateTime.now());
     }
 
     @Override
     public boolean veterinarioDisponible() {
-        return false;
+        return true;
+    }
+
+
+    @Override
+    public boolean mascotaVacunada() {
+        return true;
     }
 
     @Override
-    public boolean asistenteDisponible() {
+    public boolean revisarDisponibilidad() {
         return false;
     }
 
