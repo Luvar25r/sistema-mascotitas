@@ -16,7 +16,7 @@ public class SucursalManager extends OperacionesCRUD<Sucursal> {
     }
 
     @Override
-    protected boolean alta(Sucursal sucursal) {
+    public boolean alta(Sucursal sucursal) {
         if (validarDatos(sucursal)) {
             sucursales.add(sucursal);
             notificarCambio("ALTA", sucursal);
@@ -26,7 +26,7 @@ public class SucursalManager extends OperacionesCRUD<Sucursal> {
     }
 
     @Override
-    protected boolean baja(Sucursal sucursal) {
+    public boolean baja(Sucursal sucursal) {
         boolean eliminado = sucursales.remove(sucursal);
         if (eliminado) {
             notificarCambio("BAJA", sucursal);
@@ -35,7 +35,7 @@ public class SucursalManager extends OperacionesCRUD<Sucursal> {
     }
 
     @Override
-    protected boolean edicion(Sucursal sucursalAntigua, Sucursal sucursalNueva) {
+    public boolean edicion(Sucursal sucursalAntigua, Sucursal sucursalNueva) {
         int index = sucursales.indexOf(sucursalAntigua);
         if (index != -1 && validarDatos(sucursalNueva)) {
             sucursales.set(index, sucursalNueva);
@@ -43,6 +43,56 @@ public class SucursalManager extends OperacionesCRUD<Sucursal> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Sucursal solicitarDatosAlta() {
+        return null;
+    }
+
+    @Override
+    public Sucursal solicitarDatosEdicion(Sucursal elementoExistente) {
+        return null;
+    }
+
+    @Override
+    public void mostrarDetalles(Sucursal elemento) {
+
+    }
+
+    @Override
+    public void mostrarLista() {
+
+    }
+
+    @Override
+    protected void mostrarEncabezadoAlta() {
+
+    }
+
+    @Override
+    protected void mostrarEncabezadoBaja() {
+
+    }
+
+    @Override
+    protected void mostrarEncabezadoEdicion() {
+
+    }
+
+    @Override
+    protected Object solicitarIdParaBaja() {
+        return null;
+    }
+
+    @Override
+    protected Object solicitarIdParaEdicion() {
+        return null;
+    }
+
+    @Override
+    protected String getId(Sucursal elemento) {
+        return "";
     }
 
     @Override
@@ -56,6 +106,16 @@ public class SucursalManager extends OperacionesCRUD<Sucursal> {
     @Override
     protected void notificarCambio(String tipoOperacion, Sucursal sucursal) {
         System.out.println("Operación " + tipoOperacion + " realizada en sucursal: " + sucursal.getNombre());
+    }
+
+    @Override
+    protected Object obtenerIdElemento(Sucursal elemento) {
+        return null;
+    }
+
+    @Override
+    protected boolean coincideConCriterio(Sucursal elemento, String criterio) {
+        return false;
     }
 
     public List<Sucursal> listarSucursales() {

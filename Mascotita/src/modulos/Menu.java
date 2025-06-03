@@ -1,5 +1,6 @@
 package modulos;
 
+import utils.ClienteCRUD;
 import java.util.Scanner;
 
 /**
@@ -8,9 +9,11 @@ import java.util.Scanner;
  */
 public class Menu {
     private Scanner scanner;
+    private ClienteCRUD clienteCRUD;
     
     public Menu() {
         this.scanner = new Scanner(System.in);
+        this.clienteCRUD = new ClienteCRUD();
     }
     
     /**
@@ -79,12 +82,55 @@ public class Menu {
             
             switch (opcion) {
                 case 1:
-                    submenuABE("Cliente");
-                    // TODO: Implementar ModuloCliente con métodos alta(), baja(), edicion()
+                    submenuClientes();
                     break;
                 case 2:
                     submenuABE("Mascota");
                     // TODO: Implementar ModuloMascota con métodos alta(), baja(), edicion()
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
+    }
+    
+    /**
+     * Submenu específico para gestión de clientes
+     */
+    private void submenuClientes() {
+        int opcion;
+        
+        do {
+            System.out.println("\n=== GESTIÓN DE CLIENTES ===");
+            System.out.println("1. Alta de Cliente");
+            System.out.println("2. Baja de Cliente");
+            System.out.println("3. Edición de Cliente");
+            System.out.println("4. Consultar Cliente");
+            System.out.println("5. Listar todos los Clientes");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+            
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+            
+            switch (opcion) {
+                case 1:
+                    clienteCRUD.alta();
+                    break;
+                case 2:
+                    clienteCRUD.baja();
+                    break;
+                case 3:
+                    clienteCRUD.edicion();
+                    break;
+                case 4:
+                    clienteCRUD.consulta();
+                    break;
+                case 5:
+                    clienteCRUD.mostrarLista();
+                    esperarTecla();
                     break;
                 case 0:
                     break;
@@ -321,12 +367,18 @@ public class Menu {
             switch (opcion) {
                 case 1:
                     System.out.println("Registrando nuevo " + entidad.toLowerCase() + "...");
+                    System.out.println("⚠️  Funcionalidad pendiente de implementar.");
+                    esperarTecla();
                     break;
                 case 2:
                     System.out.println("Eliminando " + entidad.toLowerCase() + "...");
+                    System.out.println("⚠️  Funcionalidad pendiente de implementar.");
+                    esperarTecla();
                     break;
                 case 3:
                     System.out.println("Editando " + entidad.toLowerCase() + "...");
+                    System.out.println("⚠️  Funcionalidad pendiente de implementar.");
+                    esperarTecla();
                     break;
                 case 0:
                     break;
@@ -334,6 +386,14 @@ public class Menu {
                     System.out.println("Opción no válida.");
             }
         } while (opcion != 0);
+    }
+    
+    /**
+     * Método para esperar que el usuario presione una tecla
+     */
+    private void esperarTecla() {
+        System.out.println("\nPresione Enter para continuar...");
+        scanner.nextLine();
     }
     
     /**

@@ -19,7 +19,7 @@ public class ProductoManager extends OperacionesCRUD<Producto> {
     }
 
     @Override
-    protected boolean alta(Producto producto) {
+    public boolean alta(Producto producto) {
         if (validarDatos(producto)) {
             productos.add(producto);
             notificarCambio("ALTA", producto);
@@ -29,7 +29,7 @@ public class ProductoManager extends OperacionesCRUD<Producto> {
     }
 
     @Override
-    protected boolean baja(Producto producto) {
+    public boolean baja(Producto producto) {
         boolean eliminado = productos.remove(producto);
         if (eliminado) {
             notificarCambio("BAJA", producto);
@@ -38,7 +38,7 @@ public class ProductoManager extends OperacionesCRUD<Producto> {
     }
 
     @Override
-    protected boolean edicion(Producto productoAntiguo, Producto productoNuevo) {
+    public boolean edicion(Producto productoAntiguo, Producto productoNuevo) {
         int index = productos.indexOf(productoAntiguo);
         if (index != -1 && validarDatos(productoNuevo)) {
             productos.set(index, productoNuevo);
@@ -46,6 +46,56 @@ public class ProductoManager extends OperacionesCRUD<Producto> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Producto solicitarDatosAlta() {
+        return null;
+    }
+
+    @Override
+    public Producto solicitarDatosEdicion(Producto elementoExistente) {
+        return null;
+    }
+
+    @Override
+    public void mostrarDetalles(Producto elemento) {
+
+    }
+
+    @Override
+    public void mostrarLista() {
+
+    }
+
+    @Override
+    protected void mostrarEncabezadoAlta() {
+
+    }
+
+    @Override
+    protected void mostrarEncabezadoBaja() {
+
+    }
+
+    @Override
+    protected void mostrarEncabezadoEdicion() {
+
+    }
+
+    @Override
+    protected Object solicitarIdParaBaja() {
+        return null;
+    }
+
+    @Override
+    protected Object solicitarIdParaEdicion() {
+        return null;
+    }
+
+    @Override
+    protected String getId(Producto elemento) {
+        return "";
     }
 
     @Override
@@ -59,6 +109,16 @@ public class ProductoManager extends OperacionesCRUD<Producto> {
     @Override
     protected void notificarCambio(String tipoOperacion, Producto producto) {
         System.out.println("Operación " + tipoOperacion + " realizada en producto: " + producto.getNombre());
+    }
+
+    @Override
+    protected Object obtenerIdElemento(Producto elemento) {
+        return null;
+    }
+
+    @Override
+    protected boolean coincideConCriterio(Producto elemento, String criterio) {
+        return false;
     }
 
     public List<Producto> listarProductos(OrdenProducto orden) {
