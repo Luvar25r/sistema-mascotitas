@@ -2,10 +2,13 @@ package utils;
 
 import modelo.Asistente;
 import modelo.Mascota;
+import modelo.Producto;
 import modelo.Servicio;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 public class ServicioCRUD extends OperacionesCRUD<Servicio> {
     
@@ -42,17 +45,17 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
 
     @Override
     public void alta() {
-
+        altaInteractiva();
     }
 
     @Override
     public void baja() {
-
+        bajaInteractiva();
     }
 
     @Override
     public void edicion() {
-
+        edicionInteractiva();
     }
 
     @Override
@@ -276,7 +279,7 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
 
     @Override
     protected String getId(Servicio elemento) {
-        return "";
+        return elemento.getNombre();
     }
 
     // Métodos específicos para Servicios
@@ -289,6 +292,113 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
             return true;
         }
         return false;
+    }
+
+    public void consulta() { 
+        consultaInteractiva();
+    }
+
+    public void consultaInteractiva() {
+        System.out.println("\n╔══════════════════════════════════════╗");
+        System.out.println("║          CONSULTA DE SERVICIO        ║");
+        System.out.println("╚══════════════════════════════════════╝");
+
+        if (elementos.isEmpty()) {
+            System.out.println("❌ No hay servicios registrados en el sistema.");
+            return;
+        }
+
+        System.out.println("\n¿Cómo desea buscar el servicio?");
+        System.out.println("1. Por nombre del servicio");
+        System.out.println("2. Por nombre/descripción");
+        System.out.println("3. Mostrar todos los servicios");
+        System.out.print("Seleccione una opción: ");
+
+        int opcion = leerEntero("");
+
+        switch (opcion) {
+            case 1:
+                consultarPorNombre();
+                break;
+            case 2:
+                consultarPorCriterio();
+                break;
+            case 3:
+                mostrarLista();
+                break;
+            default:
+                System.out.println("❌ Opción no válida.");
+        }
+    }
+    
+    private void consultarPorNombre() {
+        String nombreServicio = leerTexto("➤ Ingrese nombre del Servicio: ");
+
+        Optional<Servicio> servicioEncontrado = buscarPorId(nombreServicio);
+
+        if (servicioEncontrado.isPresent()) {
+            System.out.println("\n✅ Servicio encontrado:");
+            mostrarDetalles(servicioEncontrado.get());
+        } else {
+            System.out.println("❌ No se encontró el servicio con el nombre: " + nombreServicio);
+        }
+    }
+    
+    private void consultarPorCriterio() {
+        String criterio = leerTexto("➤ Ingrese nombre o descripción a buscar: ");
+
+        if (criterio.trim().isEmpty()) {
+            System.out.println("❌ Debe ingresar un criterio de búsqueda.");
+            return;
+        }
+
+        List<Servicio> serviciosEncontrados = buscarPorCriterio(criterio);
+
+        if (serviciosEncontrados.isEmpty()) {
+            System.out.println("❌ No se encontraron servicios que coincidan con: " + criterio);
+        } else {
+            System.out.println("\n✅ Se encontraron " + serviciosEncontrados.size() + " servicio(s):");
+            System.out.println("\n╔════════════════════════════════════════════════════════════════╗");
+            System.out.println("║                    RESULTADOS DE BÚSQUEDA                     ║");
+            System.out.println("╠════════════════════════════════════════════════════════════════╣");
+            System.out.println("║           Nombre           │  Precio  │      Descripción      ║");
+            System.out.println("╠════════════════════════════════════════════════════════════════╣");
+
+            for (Servicio servicio : serviciosEncontrados) {
+                String descripcionCorta = servicio.getDescripcion().length() > 20 ? 
+                                        servicio.getDescripcion().substring(0, 17) + "..." : 
+                                        servicio.getDescripcion();
+                
+                System.out.printf("║ %-25s │ $%-7.2f │ %-20s ║%n", 
+                                servicio.getNombre().length() > 25 ? 
+                                servicio.getNombre().substring(0, 22) + "..." : 
+                                servicio.getNombre(),
+                                servicio.getPrecio(),
+                                descripcionCorta);
+            }
+            System.out.println("╚════════════════════════════════════════════════════════════════╝");
+
+            if (serviciosEncontrados.size() == 1) {
+                String respuesta = leerTexto("\n¿Desea ver los detalles completos? (s/n): ");
+                if (respuesta.toLowerCase().startsWith("s")) {
+                    mostrarDetalles(serviciosEncontrados.get(0));
+                }
+            } else {
+                String respuesta = leerTexto("\n¿Desea ver los detalles de algún servicio? (s/n): ");
+                if (respuesta.toLowerCase().startsWith("s")) {
+                    String nombre = leerTexto("➤ Ingrese el nombre del Servicio: ");
+                    Optional<Servicio> servicio = serviciosEncontrados.stream()
+                            .filter(s -> s.getNombre().equalsIgnoreCase(nombre))
+                            .findFirst();
+
+                    if (servicio.isPresent()) {
+                        mostrarDetalles(servicio.get());
+                    } else {
+                        System.out.println("❌ El nombre ingresado no está en los resultados.");
+                    }
+                }
+            }
+        }
     }
     
     public boolean actualizarPrecioInteractivo() {

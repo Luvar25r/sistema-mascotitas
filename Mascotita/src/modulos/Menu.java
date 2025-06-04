@@ -15,6 +15,7 @@ public class Menu {
     private VeterinarioCRUD veterinarioCRUD;
     private GerenteCRUD gerenteCRUD;
     private ProductoCRUD productoCRUD;
+    private ServicioCRUD servicioCRUD;
     
     public Menu() {
         this.scanner = new Scanner(System.in);
@@ -23,6 +24,7 @@ public class Menu {
         this.veterinarioCRUD = new VeterinarioCRUD();
         this.gerenteCRUD = new GerenteCRUD();
         this.productoCRUD = new ProductoCRUD();
+        this.servicioCRUD = new ServicioCRUD();
     }
     
     /**
@@ -309,6 +311,46 @@ public class Menu {
             }
         } while (opcion != 0);
     }//SubmenuProducto
+    private void submenuServicio() {
+        int opcion;
+
+        do {
+            System.out.println("\n=== GESTIÓN DE SERVICIOS ===");
+            System.out.println("1. Alta de Servicio");
+            System.out.println("2. Baja de Servicio");
+            System.out.println("3. Edición de Servicio");
+            System.out.println("4. Consultar Servicio");
+            System.out.println("5. Listar todos los Servicios");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+
+            switch (opcion) {
+                case 1:
+                    servicioCRUD.alta();
+                    break;
+                case 2:
+                    servicioCRUD.baja();
+                    break;
+                case 3:
+                    servicioCRUD.edicion();
+                    break;
+                case 4:
+                    servicioCRUD.consulta();
+                    break;
+                case 5:
+                    servicioCRUD.mostrarLista();
+                    esperarTecla();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
+    }
     /**
      * Menu para gestión de personal
      */
@@ -421,8 +463,7 @@ public class Menu {
 
                     break;
                 case 3:
-                    submenuABE("Servicio");
-                    // TODO: Implementar ModuloServicios con métodos alta(), baja(), edicion()
+                    submenuServicio();
                     break;
                 case 4:
                     // TODO: Implementar consulta de productos con ordenamiento por ID y nombre
