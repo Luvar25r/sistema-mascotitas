@@ -9,10 +9,10 @@ import interfaces.RevisionDeCitas;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Vacunacion extends Servicio implements RevisionDeCitas {
+public class ConsultaMedica extends Servicio implements RevisionDeCitas {
     
-    public Vacunacion() {
-        super("Vacunación", "Aplicación de vacunas para mascotas", 350.0);
+    public ConsultaMedica() {
+        super("Consulta Médica", "Consulta médica veterinaria general", 500.0);
     }
 
     @Override
@@ -27,28 +27,28 @@ public class Vacunacion extends Servicio implements RevisionDeCitas {
 
     @Override
     public boolean mascotaVacunada(Mascota mascota) {
-        return true; // No necesario para vacunación
+        return true; // No necesario
     }
 
     @Override
     public boolean revisarDisponibilidad(Date fechaHora) {
-        // Implementar lógica de disponibilidad
         return fechaHora.after(new Date());
     }
 
     @Override
     public boolean revisarDisponibilidad(LocalDateTime fechaHora) {
-        return false;
+        return fechaHora != null && fechaHora.isAfter(LocalDateTime.now());
     }
 
     @Override
     public boolean veterinarioDisponible() {
-        return false;
+        return true;
     }
+
 
     @Override
     public boolean mascotaVacunada() {
-        return false;
+        return true;
     }
 
     @Override
@@ -68,6 +68,6 @@ public class Vacunacion extends Servicio implements RevisionDeCitas {
 
     @Override
     public boolean requiereVacunas() {
-        return true; // Debería ser true para un servicio de vacunación
+        return false;
     }
 }
