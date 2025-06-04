@@ -15,7 +15,7 @@ public class Cita {
     private Veterinario veterinario;
     private Asistente asistente;
     
-    public Cita() {}
+    public Cita(String numeroCita, LocalDateTime fechaHora, Cliente cliente, Mascota mascota, List<Servicio> servicios, Veterinario veterinario, modelo.personas.Asistente asistente) {}
     
                     public Cita(String numeroCita, LocalDateTime fechaHora, Cliente cliente, Mascota mascota, 
                 List<Servicio> servicios, Veterinario veterinario, Asistente asistente) {

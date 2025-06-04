@@ -1,5 +1,7 @@
 package modulos;
 
+import modelo.Mascota;
+import modelo.personas.Cliente;
 import utils.*;
 import modelo.Sucursal;
 import modelo.Zona;
@@ -19,9 +21,10 @@ public class Menu {
     private VeterinarioCRUD veterinarioCRUD;
     private GerenteCRUD gerenteCRUD;
     private AsistenteCRUD asistenteCRUD;
-
+    private AdopcionesCRUD adopcionCRUD;
     private ProductoCRUD productoCRUD;
     private ServicioCRUD servicioCRUD;
+    private CitaCRUD citasCRUD;
 
 
     public Menu() {
@@ -33,6 +36,10 @@ public class Menu {
         this.asistenteCRUD = new AsistenteCRUD();
         this.productoCRUD = new ProductoCRUD();
         this.servicioCRUD = new ServicioCRUD();
+        this.adopcionCRUD = new AdopcionesCRUD(clienteCRUD, mascotaCRUD);
+        this.citasCRUD = new CitaCRUD(clienteCRUD, mascotaCRUD,
+                veterinarioCRUD,  asistenteCRUD,
+                servicioCRUD);
     }
     
     /**
@@ -158,7 +165,6 @@ public class Menu {
             }
         } while (opcion != 0);
     }
-
     private void submenuMascotas() {
         int opcion;
 
@@ -398,6 +404,88 @@ public class Menu {
                     System.out.println("Opción no válida.");
             }
         } while (opcion != 0);
+    }// SubmenuServicio
+    private void submenuAdopciones() {//SubmenuAdopciones
+
+        int opcion;
+
+        do {
+            System.out.println("\n=== GESTIÓN DE ADOPCIONES ===");
+            System.out.println("1. Alta de Adopciones");
+            System.out.println("2. Baja de Adopciones");
+            System.out.println("3. Edición de Adopciones");
+            System.out.println("4. Consultar Adopciones");
+            System.out.println("5. Listar todas las Adopciones");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+
+            switch (opcion) {
+                case 1:
+                    adopcionCRUD.alta();
+                    break;
+                case 2:
+                    adopcionCRUD.baja();
+                    break;
+                case 3:
+                    adopcionCRUD.edicion();
+                    break;
+                case 4:
+                    adopcionCRUD.consulta();
+                    break;
+                case 5:
+                    adopcionCRUD.mostrarLista();
+                    esperarTecla();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
+    }// SubmenuServicio
+    private void submenuCitas() {//SubmenuCitas
+
+        int opcion;
+
+        do {
+            System.out.println("\n=== GESTIÓN DE CITAS ===");
+            System.out.println("1. Alta de Citas");
+            System.out.println("2. Baja de Citas");
+            System.out.println("3. Edición de Citas");
+            System.out.println("4. Consultar Citas");
+            System.out.println("5. Listar todas las Citas");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+
+            switch (opcion) {
+                case 1:
+                    citasCRUD.alta();
+                    break;
+                case 2:
+                    citasCRUD.baja();
+                    break;
+                case 3:
+                    citasCRUD.edicion();
+                    break;
+                case 4:
+                    citasCRUD.consulta();
+                    break;
+                case 5:
+                    citasCRUD.mostrarLista();
+                    esperarTecla();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
     }
     /**
      * Menu para gestión de personal
@@ -454,8 +542,8 @@ public class Menu {
             
             switch (opcion) {
                 case 1:
-                    // TODO: Implementar ModuloCitas.registrarCita() con verificaciones de interface RevisionDeCitas
-                    System.out.println("Registrando nueva cita...");
+                    submenuCitas();
+
                     break;
                 case 2:
                     // TODO: Implementar ModuloCitas.consultarCitasAgendadas() ordenadas por fecha más cercana
@@ -540,9 +628,11 @@ public class Menu {
         
         do {
             System.out.println("\n=== ADMINISTRACIÓN DE ADOPCIONES ===");
-            System.out.println("1. Mascotas disponibles para adopción");
-            System.out.println("2. Registro de adopciones realizadas");
-            System.out.println("3. Consultar mascotas devueltas");
+            System.out.println("1. Realizar una Adopción");
+            System.out.println("2. Devolver una mascota");
+            System.out.println("3. Mascotas disponibles para adopción");
+            System.out.println("4. Registro de adopciones realizadas");
+            System.out.println("5. Consultar mascotas devueltas");
             System.out.println("0. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
             
@@ -551,8 +641,7 @@ public class Menu {
             
             switch (opcion) {
                 case 1:
-                    // TODO: Implementar ModuloAdopciones.mostrarMascotasDisponibles() con verificación de vacunas
-                    System.out.println("Mostrando mascotas disponibles...");
+                    submenuAdopciones();
                     break;
                 case 2:
                     // TODO: Implementar consulta de adopciones con ordenamiento por cliente y mascota

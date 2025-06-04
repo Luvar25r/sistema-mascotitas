@@ -2,7 +2,6 @@ package utils;
 
 import modelo.Asistente;
 import modelo.Mascota;
-import modelo.Producto;
 import modelo.Servicio;
 
 import java.time.LocalDateTime;
@@ -310,15 +309,16 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
 
         System.out.println("\n¿Cómo desea buscar el servicio?");
         System.out.println("1. Por nombre del servicio");
-        System.out.println("2. Por nombre/descripción");
+        System.out.println("2. Por criterio");
         System.out.println("3. Mostrar todos los servicios");
         System.out.print("Seleccione una opción: ");
 
-        int opcion = leerEntero("");
+        int opcionnum = leerEntero("");
 
-        switch (opcion) {
+        switch (opcionnum) {
             case 1:
-                consultarPorNombre();
+                String opcion = leerTexto("➤ Ingrese el nombre del servicio: ");
+                consultarPorNombre(opcion);
                 break;
             case 2:
                 consultarPorCriterio();
@@ -331,10 +331,10 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
         }
     }
     
-    private void consultarPorNombre() {
-        String nombreServicio = leerTexto("➤ Ingrese nombre del Servicio: ");
+    public Optional <Servicio> consultarPorNombre(String nombreServicio) {
+         nombreServicio = leerTexto("➤ Ingrese nombre del Servicio: ");
 
-        Optional<Servicio> servicioEncontrado = buscarPorId(nombreServicio);
+        Optional<Servicio> servicioEncontrado = consultarPorNombre(nombreServicio);
 
         if (servicioEncontrado.isPresent()) {
             System.out.println("\n✅ Servicio encontrado:");
@@ -342,6 +342,8 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
         } else {
             System.out.println("❌ No se encontró el servicio con el nombre: " + nombreServicio);
         }
+
+        return servicioEncontrado;
     }
     
     private void consultarPorCriterio() {
