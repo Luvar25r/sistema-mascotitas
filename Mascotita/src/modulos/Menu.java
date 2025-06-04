@@ -14,15 +14,19 @@ public class Menu {
     private MascotaCRUD mascotaCRUD;
     private VeterinarioCRUD veterinarioCRUD;
     private GerenteCRUD gerenteCRUD;
+    private AsistenteCRUD asistenteCRUD;
+
     private ProductoCRUD productoCRUD;
     private ServicioCRUD servicioCRUD;
-    
+
+
     public Menu() {
         this.scanner = new Scanner(System.in);
         this.clienteCRUD = new ClienteCRUD();
         this.mascotaCRUD = new MascotaCRUD();
         this.veterinarioCRUD = new VeterinarioCRUD();
         this.gerenteCRUD = new GerenteCRUD();
+        this.asistenteCRUD = new AsistenteCRUD();
         this.productoCRUD = new ProductoCRUD();
         this.servicioCRUD = new ServicioCRUD();
     }
@@ -271,6 +275,46 @@ public class Menu {
             }
         } while (opcion != 0);
     }//SubmenuGerente
+    private void submenuAsistente() {
+        int opcion;
+
+        do {
+            System.out.println("\n=== GESTIÓN DE ASISTENTE ===");
+            System.out.println("1. Alta de Asistente");
+            System.out.println("2. Baja de Asisente");
+            System.out.println("3. Edición de Asistente");
+            System.out.println("4. Consultar Asistente");
+            System.out.println("5. Listar todos los Asisentes");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+
+            switch (opcion) {
+                case 1:
+                    asistenteCRUD.alta();
+                    break;
+                case 2:
+                    asistenteCRUD.baja();
+                    break;
+                case 3:
+                    asistenteCRUD.edicion();
+                    break;
+                case 4:
+                    asistenteCRUD.consulta();
+                    break;
+                case 5:
+                    asistenteCRUD.mostrarLista();
+                    esperarTecla();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
+    }//SubmenuGerente
     private void submenuProducto() {
         int opcion;
 
@@ -373,8 +417,7 @@ public class Menu {
                     submenuVeterinarios();
                     break;
                 case 2:
-                    submenuABE("Asistente Personal");
-                    // TODO: Implementar ModuloAsistente con métodos alta(), baja(), edicion()
+                    submenuAsistente();
                     break;
                 case 3:
                     submenuGerente();

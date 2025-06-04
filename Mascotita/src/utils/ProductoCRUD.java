@@ -58,18 +58,18 @@ public class ProductoCRUD extends OperacionesCRUD<Producto> {
 
     public void consultaInteractiva() {
         System.out.println("\n╔══════════════════════════════════════╗");
-        System.out.println("║          CONSULTA DE CLIENTE         ║");
+        System.out.println("║          CONSULTA DE PRODUCTO         ║");
         System.out.println("╚══════════════════════════════════════╝");
 
         if (elementos.isEmpty()) {
-            System.out.println("❌ No hay clientes registrados en el sistema.");
+            System.out.println("❌ No hay productos registrados en el sistema.");
             return;
         }
 
-        System.out.println("\n¿Cómo desea buscar el cliente?");
-        System.out.println("1. Por número de cliente");
-        System.out.println("2. Por nombre/apellido/CURP");
-        System.out.println("3. Mostrar todos los clientes");
+        System.out.println("\n¿Cómo desea buscar el producto?");
+        System.out.println("1. Por id de producto");
+        System.out.println("2. Por nombre del producto");
+        System.out.println("3. Mostrar todos los productos");
         System.out.print("Seleccione una opción: ");
 
         int opcion = leerEntero("");
@@ -101,7 +101,7 @@ public class ProductoCRUD extends OperacionesCRUD<Producto> {
         }
     }
     private void consultarPorCriterio() {
-        String criterio = leerTexto("➤ Ingrese nombre, apellido o CURP a buscar: ");
+        String criterio = leerTexto("➤ Ingrese el nombre del producto: ");
 
         if (criterio.trim().isEmpty()) {
             System.out.println("❌ Debe ingresar un criterio de búsqueda.");
@@ -117,7 +117,7 @@ public class ProductoCRUD extends OperacionesCRUD<Producto> {
             System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
             System.out.println("║                    RESULTADOS DE BÚSQUEDA                   ║");
             System.out.println("╠══════════════════════════════════════════════════════════════╣");
-            System.out.println("║  Id del Producto  │                 Nombre        │ Teléfono ║");
+            System.out.println("║  Id del Producto  │                 Nombre        │ Precio ║");
             System.out.println("╠══════════════════════════════════════════════════════════════╣");
 
             for (Producto producto : productosEncontrados) {
