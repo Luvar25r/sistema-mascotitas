@@ -1,6 +1,10 @@
 package utils;
 
 import modelo.Producto;
+import modelo.personas.Cliente;
+
+import java.util.List;
+import java.util.Optional;
 
 public class ProductoCRUD extends OperacionesCRUD<Producto> {
     
@@ -35,22 +39,120 @@ public class ProductoCRUD extends OperacionesCRUD<Producto> {
         return producto.getNombre().toLowerCase().contains(criterioLower)
             || producto.getDescripcion().toLowerCase().contains(criterioLower);
     }
-
-    @Override
     public void alta() {
-
+        altaInteractiva();
     }
 
-    @Override
     public void baja() {
-
+        bajaInteractiva();
     }
 
-    @Override
     public void edicion() {
-
+        edicionInteractiva();
     }
 
+    public void consulta() { consultaInteractiva();}
+
+
+
+
+    public void consultaInteractiva() {
+        System.out.println("\n╔══════════════════════════════════════╗");
+        System.out.println("║          CONSULTA DE CLIENTE         ║");
+        System.out.println("╚══════════════════════════════════════╝");
+
+        if (elementos.isEmpty()) {
+            System.out.println("❌ No hay clientes registrados en el sistema.");
+            return;
+        }
+
+        System.out.println("\n¿Cómo desea buscar el cliente?");
+        System.out.println("1. Por número de cliente");
+        System.out.println("2. Por nombre/apellido/CURP");
+        System.out.println("3. Mostrar todos los clientes");
+        System.out.print("Seleccione una opción: ");
+
+        int opcion = leerEntero("");
+
+        switch (opcion) {
+            case 1:
+                consultarPorNumero();
+                break;
+            case 2:
+                consultarPorCriterio();
+                break;
+            case 3:
+                mostrarLista();
+                break;
+            default:
+                System.out.println("❌ Opción no válida.");
+        }
+    }
+    private void consultarPorNumero() {
+        int idProducto= leerEntero("➤ Ingrese id del Producto: ");
+
+        Optional<Producto> productoEncontrado = buscarPorId(idProducto);
+
+        if (productoEncontrado.isPresent()) {
+            System.out.println("\n✅ Producto encontrado:");
+            mostrarDetalles(productoEncontrado.get());
+        } else {
+            System.out.println("❌ No se encontró el Producto con el id : " + idProducto);
+        }
+    }
+    private void consultarPorCriterio() {
+        String criterio = leerTexto("➤ Ingrese nombre, apellido o CURP a buscar: ");
+
+        if (criterio.trim().isEmpty()) {
+            System.out.println("❌ Debe ingresar un criterio de búsqueda.");
+            return;
+        }
+
+        List<Producto> productosEncontrados = buscarPorCriterio(criterio);
+
+        if (productosEncontrados.isEmpty()) {
+            System.out.println("❌ No se encontraron productos que coincidan con: " + criterio);
+        } else {
+            System.out.println("\n✅ Se encontraron " + productosEncontrados.size() + " cliente(s):");
+            System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+            System.out.println("║                    RESULTADOS DE BÚSQUEDA                   ║");
+            System.out.println("╠══════════════════════════════════════════════════════════════╣");
+            System.out.println("║  Id del Producto  │                 Nombre        │ Teléfono ║");
+            System.out.println("╠══════════════════════════════════════════════════════════════╣");
+
+            for (Producto producto : productosEncontrados) {
+                System.out.printf("║ %-8d │ %-33s │ %-8s ║%n",
+                        producto.getIdProducto(),
+                producto.getNombre(),
+                        producto.getPrecio(),
+                producto.getStock(),
+                producto.getDescripcion() );
+
+            }
+            System.out.println("╚══════════════════════════════════════════════════════════════╝");
+
+            if (productosEncontrados.size() == 1) {
+                String respuesta = leerTexto("\n¿Desea ver los detalles completos? (s/n): ");
+                if (respuesta.toLowerCase().startsWith("s")) {
+                    mostrarDetalles(productosEncontrados.get(0));
+                }
+            } else {
+                String respuesta = leerTexto("\n¿Desea ver los detalles de algún producto? (s/n): ");
+                if (respuesta.toLowerCase().startsWith("s")) {
+                    int numero = leerEntero("➤ Ingrese el id del Producto: ");
+                    Optional<Producto> producto = productosEncontrados.stream()
+                            .filter(c -> c.getIdProducto() == numero)
+                            .findFirst();
+
+                    if (producto.isPresent()) {
+                        mostrarDetalles(producto.get());
+                    } else {
+                        System.out.println("❌ El número ingresado no está en los resultados.");
+                    }
+                }
+            }
+        }
+    }
     @Override
     public Producto solicitarDatosAlta() {
         try {
