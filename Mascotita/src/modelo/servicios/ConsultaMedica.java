@@ -2,7 +2,7 @@ package modelo.servicios;
 
 import modelo.Servicio;
 import modelo.Mascota;
-import modelo.Veterinario;
+import modelo.personas.Veterinario;
 import modelo.Asistente;
 import interfaces.RevisionDeCitas;
 

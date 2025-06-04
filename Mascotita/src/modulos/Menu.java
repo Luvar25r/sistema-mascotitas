@@ -1,7 +1,8 @@
 package modulos;
 
-import utils.ClienteCRUD;
+import utils.*;
 import java.util.Scanner;
+
 
 /**
  * Clase Menu principal del sistema de mascotas
@@ -10,10 +11,16 @@ import java.util.Scanner;
 public class Menu {
     private Scanner scanner;
     private ClienteCRUD clienteCRUD;
+    private MascotaCRUD mascotaCRUD;
+    private VeterinarioCRUD veterinarioCRUD;
+    private GerenteCRUD gerenteCRUD;
     
     public Menu() {
         this.scanner = new Scanner(System.in);
         this.clienteCRUD = new ClienteCRUD();
+        this.mascotaCRUD = new MascotaCRUD();
+        this.veterinarioCRUD = new VeterinarioCRUD();
+        this.gerenteCRUD = new GerenteCRUD();
     }
     
     /**
@@ -63,6 +70,7 @@ public class Menu {
             }
         } while (opcion != 0);
     }
+
     
     /**
      * Menu para gestión de clientes y mascotas
@@ -85,8 +93,7 @@ public class Menu {
                     submenuClientes();
                     break;
                 case 2:
-                    submenuABE("Mascota");
-                    // TODO: Implementar ModuloMascota con métodos alta(), baja(), edicion()
+                    submenuMascotas();
                     break;
                 case 0:
                     break;
@@ -139,7 +146,127 @@ public class Menu {
             }
         } while (opcion != 0);
     }
-    
+
+    private void submenuMascotas() {
+        int opcion;
+
+        do {
+            System.out.println("\n=== GESTIÓN DE MASCOTAS ===");
+            System.out.println("1. Alta de Mascota");
+            System.out.println("2. Baja de Mascota");
+            System.out.println("3. Edición de Mascota");
+            System.out.println("4. Consultar Mascotas");
+            System.out.println("5. Listar todos los Mascotas");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+
+            switch (opcion) {
+                case 1:
+                    mascotaCRUD.alta();
+                    break;
+                case 2:
+                    mascotaCRUD.baja();
+                    break;
+                case 3:
+                    mascotaCRUD.edicion();
+                    break;
+                case 4:
+                    mascotaCRUD.consulta();
+                    break;
+                case 5:
+                    mascotaCRUD.mostrarLista();
+                    esperarTecla();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
+    }//SubmenuMascotas
+    private void submenuVeterinarios() {
+        int opcion;
+
+        do {
+            System.out.println("\n=== GESTIÓN DE VETERINARIOS ===");
+            System.out.println("1. Alta de Veterinario");
+            System.out.println("2. Baja de Veterinario");
+            System.out.println("3. Edición de Veterinario");
+            System.out.println("4. Consultar Veterinario");
+            System.out.println("5. Listar todos los Veterinarios");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+
+            switch (opcion) {
+                case 1:
+                    veterinarioCRUD.alta();
+                    break;
+                case 2:
+                    veterinarioCRUD.baja();
+                    break;
+                case 3:
+                    veterinarioCRUD.edicion();
+                    break;
+                case 4:
+                    veterinarioCRUD.consulta();
+                    break;
+                case 5:
+                    veterinarioCRUD.mostrarLista();
+                    esperarTecla();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
+    }//SubmenuVeterinario
+    private void submenuGerente() {
+        int opcion;
+
+        do {
+            System.out.println("\n=== GESTIÓN DE GERENTE ===");
+            System.out.println("1. Alta de Gerente ");
+            System.out.println("2. Baja de Gerente");
+            System.out.println("3. Edición de Gerente");
+            System.out.println("4. Consultar Gerente");
+            System.out.println("5. Listar todos los Gerentes");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+
+            switch (opcion) {
+                case 1:
+                    gerenteCRUD.alta();
+                    break;
+                case 2:
+                    gerenteCRUD.baja();
+                    break;
+                case 3:
+                    gerenteCRUD.edicion();
+                    break;
+                case 4:
+                    gerenteCRUD.consulta();
+                    break;
+                case 5:
+                    gerenteCRUD.mostrarLista();
+                    esperarTecla();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 0);
+    }//SubmenuGerente
     /**
      * Menu para gestión de personal
      */
@@ -159,16 +286,15 @@ public class Menu {
             
             switch (opcion) {
                 case 1:
-                    submenuABE("Veterinario");
-                    // TODO: Implementar ModuloVeterinario con métodos alta(), baja(), edicion() y ordenamiento A-Z/Z-A
+                    submenuVeterinarios();
                     break;
                 case 2:
                     submenuABE("Asistente Personal");
                     // TODO: Implementar ModuloAsistente con métodos alta(), baja(), edicion()
                     break;
                 case 3:
-                    submenuABE("Gerente");
-                    // TODO: Implementar ModuloGerente con métodos alta(), baja(), edicion()
+                    submenuGerente();
+
                     break;
                 case 0:
                     break;

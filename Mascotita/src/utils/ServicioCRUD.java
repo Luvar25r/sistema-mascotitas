@@ -39,7 +39,22 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
         return servicio.getNombre().toLowerCase().contains(criterioLower)
             || servicio.getDescripcion().toLowerCase().contains(criterioLower);
     }
-    
+
+    @Override
+    public void alta() {
+
+    }
+
+    @Override
+    public void baja() {
+
+    }
+
+    @Override
+    public void edicion() {
+
+    }
+
     @Override
     public Servicio solicitarDatosAlta() {
         try {

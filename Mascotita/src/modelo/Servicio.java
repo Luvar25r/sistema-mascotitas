@@ -1,6 +1,7 @@
 package modelo;
 
 import interfaces.RevisionDeCitas;
+import modelo.personas.Veterinario;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

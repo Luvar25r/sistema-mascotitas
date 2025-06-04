@@ -46,6 +46,21 @@ public class SucursalManager extends OperacionesCRUD<Sucursal> {
     }
 
     @Override
+    public void alta() {
+
+    }
+
+    @Override
+    public void baja() {
+
+    }
+
+    @Override
+    public void edicion() {
+
+    }
+
+    @Override
     public Sucursal solicitarDatosAlta() {
         return null;
     }

@@ -35,7 +35,22 @@ public class ProductoCRUD extends OperacionesCRUD<Producto> {
         return producto.getNombre().toLowerCase().contains(criterioLower)
             || producto.getDescripcion().toLowerCase().contains(criterioLower);
     }
-    
+
+    @Override
+    public void alta() {
+
+    }
+
+    @Override
+    public void baja() {
+
+    }
+
+    @Override
+    public void edicion() {
+
+    }
+
     @Override
     public Producto solicitarDatosAlta() {
         try {

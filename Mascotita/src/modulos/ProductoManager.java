@@ -49,6 +49,21 @@ public class ProductoManager extends OperacionesCRUD<Producto> {
     }
 
     @Override
+    public void alta() {
+
+    }
+
+    @Override
+    public void baja() {
+
+    }
+
+    @Override
+    public void edicion() {
+
+    }
+
+    @Override
     public Producto solicitarDatosAlta() {
         return null;
     }

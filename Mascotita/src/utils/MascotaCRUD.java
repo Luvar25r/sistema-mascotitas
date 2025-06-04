@@ -1,264 +1,256 @@
 package utils;
 
 import modelo.Mascota;
-import java.util.List;
+
 import java.util.Optional;
+import java.util.Scanner;
 
 public class MascotaCRUD extends OperacionesCRUD<Mascota> {
-    
-    // ========== MÉTODOS WRAPPER PARA EL MENÚ ==========
-    
+    private final Scanner scanner;
+
+    public MascotaCRUD() {
+        super();
+        this.scanner = new Scanner(System.in);
+    }
+
+    public void menuMascotas() {
+        int opcion;
+        do {
+            System.out.println("\n╔══════════════════════════════════════╗");
+            System.out.println("║      ADMINISTRACIÓN DE MASCOTAS      ║");
+            System.out.println("╠══════════════════════════════════════╣");
+            System.out.println("║ 1. Alta de Mascota                   ║");
+            System.out.println("║ 2. Baja de Mascota                   ║");
+            System.out.println("║ 3. Edición de Mascota                ║");
+            System.out.println("║ 4. Consultar Mascotas                ║");
+            System.out.println("║ 0. Volver al menú principal          ║");
+            System.out.println("╚══════════════════════════════════════╝");
+
+            try {
+                System.out.print("Seleccione una opción: ");
+                opcion = Integer.parseInt(scanner.nextLine().trim());
+
+                switch (opcion) {
+                    case 1 -> alta();
+                    case 2 -> baja();
+                    case 3 -> edicion();
+                    case 4 -> consulta();
+                    case 0 -> System.out.println("Volviendo al menú principal...");
+                    default -> System.out.println("❌ Opción no válida");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Por favor, ingrese un número válido");
+                opcion = -1;
+            }
+        } while (opcion != 0);
+    }
+
+    @Override
     public void alta() {
-        altaInteractiva();
+        System.out.println("Registrando nueva mascota...");
+        Mascota nuevaMascota = solicitarDatosAlta();
+        if (nuevaMascota != null && elementos.add(nuevaMascota)) {
+            System.out.println("✅ Mascota registrada exitosamente");
+        } else {
+            System.out.println("❌ No se pudo registrar la mascota");
+        }
     }
-    
+
+    @Override
     public void baja() {
-        bajaInteractiva();
-    }
-    
-    public void edicion() {
-        edicionInteractiva();
-    }
-    
-    public void consulta() {
-        consultaInteractiva();
-    }
-    
-    public void consultaInteractiva() {
-        System.out.println("\n╔══════════════════════════════════════╗");
-        System.out.println("║          CONSULTA DE MASCOTA         ║");
-        System.out.println("╚══════════════════════════════════════╝");
-        
+        System.out.println("Eliminando mascota...");
+
         if (elementos.isEmpty()) {
-            System.out.println("❌ No hay mascotas registradas en el sistema.");
+            System.out.println("❌ No hay mascotas registradas");
             return;
         }
-        
-        System.out.println("\n¿Cómo desea buscar la mascota?");
-        System.out.println("1. Por ID de mascota");
-        System.out.println("2. Por nombre");
-        System.out.println("3. Mostrar todas las mascotas");
-        System.out.print("Seleccione una opción: ");
-        
-        int opcion = leerEntero("");
-        
-        switch (opcion) {
-            case 1:
-                consultarPorId();
-                break;
-            case 2:
-                consultarPorCriterio();
-                break;
-            case 3:
-                mostrarLista();
-                break;
-            default:
-                System.out.println("❌ Opción no válida.");
-        }
-    }
-    
-    private void consultarPorId() {
-        String idMascota = leerTexto("➤ Ingrese el ID de la mascota: ");
-        
-        Optional<Mascota> mascotaEncontrada = buscarPorId(idMascota);
-        
-        if (mascotaEncontrada.isPresent()) {
-            System.out.println("\n✅ Mascota encontrada:");
-            mostrarDetalles(mascotaEncontrada.get());
+
+        mostrarLista();
+        System.out.print("Ingrese el ID de la mascota a eliminar: ");
+        String id = scanner.nextLine().trim();
+
+        Optional<Mascota> mascota = buscarPorId(id);
+        if (mascota.isPresent()) {
+            if (elementos.remove(mascota.get())) {
+                System.out.println("✅ Mascota eliminada exitosamente");
+            } else {
+                System.out.println("❌ Error al eliminar la mascota");
+            }
         } else {
-            System.out.println("❌ No se encontró una mascota con el ID: " + idMascota);
+            System.out.println("❌ No se encontró la mascota con el ID especificado");
         }
     }
-    
-    private void consultarPorCriterio() {
-        String criterio = leerTexto("➤ Ingrese el nombre a buscar: ");
-        
-        if (criterio.trim().isEmpty()) {
-            System.out.println("❌ Debe ingresar un criterio de búsqueda.");
+
+    @Override
+    public void edicion() {
+        System.out.println("Editando mascota...");
+
+        if (elementos.isEmpty()) {
+            System.out.println("❌ No hay mascotas registradas");
             return;
         }
-        
-        List<Mascota> mascotasEncontradas = buscarPorCriterio(criterio);
-        
-        if (mascotasEncontradas.isEmpty()) {
-            System.out.println("❌ No se encontraron mascotas que coincidan con: " + criterio);
+
+        mostrarLista();
+        System.out.print("Ingrese el ID de la mascota a editar: ");
+        String id = scanner.nextLine().trim();
+
+        Optional<Mascota> mascotaExistente = buscarPorId(id);
+        if (mascotaExistente.isPresent()) {
+            Mascota editada = solicitarDatosEdicion(mascotaExistente.get());
+            if (editada != null) {
+                elementos.remove(mascotaExistente.get());
+                elementos.add(editada);
+                System.out.println("✅ Mascota actualizada exitosamente");
+            }
         } else {
-            System.out.println("\n✅ Se encontraron " + mascotasEncontradas.size() + " mascota(s):");
-            mostrarLista();
+            System.out.println("❌ No se encontró la mascota con el ID especificado");
         }
     }
-    
-    @Override
-    protected String getId(Mascota mascota) {
-        return mascota.getId();
+
+    public void consulta() {
+        System.out.println("\n╔══════════════════════════════════════╗");
+        System.out.println("║         CONSULTA DE MASCOTAS         ║");
+        System.out.println("╚══════════════════════════════════════╝");
+
+        if (elementos.isEmpty()) {
+            System.out.println("❌ No hay mascotas registradas");
+            return;
+        }
+
+        mostrarLista();
     }
-    
-    @Override
-    protected boolean validarDatos(Mascota mascota) {
-        return mascota != null 
-            && mascota.getId() != null && !mascota.getId().trim().isEmpty()
-            && mascota.getNombre() != null && !mascota.getNombre().trim().isEmpty();
-    }
-    
-    @Override
-    protected void notificarCambio(String tipoOperacion, Mascota mascota) {
-        System.out.println("══════════════════════════════════════");
-        System.out.println("✓ " + tipoOperacion + " DE MASCOTA EXITOSA");
-        System.out.println("Mascota: " + mascota.getNombre());
-        System.out.println("ID: " + getId(mascota));
-        System.out.println("Vacunada: " + (mascota.isVacunada() ? "Sí" : "No"));
-        System.out.println("══════════════════════════════════════");
-    }
-    
-    @Override
-    protected Object obtenerIdElemento(Mascota mascota) {
-        return mascota.getId();
-    }
-    
-    @Override
-    protected boolean coincideConCriterio(Mascota mascota, String criterio) {
-        String criterioLower = criterio.toLowerCase();
-        return mascota.getNombre().toLowerCase().contains(criterioLower)
-            || mascota.getId().toLowerCase().contains(criterioLower);
-    }
-    
+
     @Override
     public Mascota solicitarDatosAlta() {
         try {
-            String id = leerTexto("➤ Ingrese el ID de la mascota: ");
+            System.out.print("Ingrese el ID de la mascota: ");
+            String id = scanner.nextLine().trim();
+
             if (id.isEmpty()) {
-                System.out.println("❌ El ID es obligatorio.");
+                System.out.println("❌ El ID es obligatorio");
                 return null;
             }
-            
-            String nombre = leerTexto("➤ Ingrese el nombre de la mascota: ");
-            if (nombre.isEmpty()) {
-                System.out.println("❌ El nombre es obligatorio.");
+
+            if (buscarPorId(id).isPresent()) {
+                System.out.println("❌ Ya existe una mascota con ese ID");
                 return null;
             }
-            
+
+            System.out.print("Ingrese el nombre de la mascota: ");
+            String nombre = scanner.nextLine().trim();
+
+            System.out.print("Ingrese la raza de la mascota: ");
+            String raza = scanner.nextLine().trim();
+
             Mascota nuevaMascota = new Mascota(id, nombre);
-            
-            String agregarVacunas = leerTexto("➤ ¿Desea agregar vacunas? (s/n): ");
-            if (agregarVacunas.toLowerCase().startsWith("s")) {
-                String vacunasStr = leerTexto("➤ Ingrese las vacunas separadas por comas: ");
-                if (!vacunasStr.isEmpty()) {
-                    String[] vacunas = vacunasStr.split(",");
-                    for (String vacuna : vacunas) {
+            nuevaMascota.setRaza(raza);
+
+            System.out.print("¿Desea agregar vacunas? (s/n): ");
+            if (scanner.nextLine().trim().toLowerCase().startsWith("s")) {
+                System.out.print("Ingrese las vacunas separadas por comas: ");
+                String[] vacunas = scanner.nextLine().split(",");
+                for (String vacuna : vacunas) {
+                    if (!vacuna.trim().isEmpty()) {
                         nuevaMascota.agregarVacuna(vacuna.trim());
                     }
                 }
             }
-            
+
             return nuevaMascota;
-                             
+
         } catch (Exception e) {
-            System.out.println("❌ Error al solicitar datos: " + e.getMessage());
+            System.out.println("❌ Error: " + e.getMessage());
             return null;
         }
     }
-    
+
     @Override
     public Mascota solicitarDatosEdicion(Mascota mascotaExistente) {
         try {
-            System.out.println("\n📝 Datos actuales de la mascota:");
+            System.out.println("\nDatos actuales de la mascota:");
             mostrarDetalles(mascotaExistente);
-            System.out.println("\n➤ Ingrese los nuevos datos (presione Enter para mantener el valor actual):");
-            
-            String nombre = leerTexto("➤ Nombre [" + mascotaExistente.getNombre() + "]: ");
-            if (nombre.isEmpty()) nombre = mascotaExistente.getNombre();
-            
-            Mascota mascotaEditada = new Mascota(mascotaExistente.getId(), nombre);
-            
-            for (String vacuna : mascotaExistente.getVacunas()) {
-                mascotaEditada.agregarVacuna(vacuna);
-            }
-            
-            String editarVacunas = leerTexto("➤ ¿Desea editar las vacunas? (s/n): ");
-            if (editarVacunas.toLowerCase().startsWith("s")) {
-                String vacunasStr = leerTexto("➤ Ingrese TODAS las vacunas separadas por comas: ");
-                if (!vacunasStr.isEmpty()) {
-                    mascotaEditada = new Mascota(mascotaExistente.getId(), nombre);
-                    String[] vacunas = vacunasStr.split(",");
-                    for (String vacuna : vacunas) {
-                        mascotaEditada.agregarVacuna(vacuna.trim());
-                    }
+
+            System.out.print("Nuevo nombre (Enter para mantener '" + mascotaExistente.getNombre() + "'): ");
+            String nuevoNombre = scanner.nextLine().trim();
+            if (nuevoNombre.isEmpty()) nuevoNombre = mascotaExistente.getNombre();
+
+            System.out.print("Nueva raza (Enter para mantener '" + mascotaExistente.getRaza() + "'): ");
+            String nuevaRaza = scanner.nextLine().trim();
+            if (nuevaRaza.isEmpty()) nuevaRaza = mascotaExistente.getRaza();
+
+            Mascota mascotaEditada = new Mascota(mascotaExistente.getId(), nuevoNombre);
+            mascotaEditada.setRaza(nuevaRaza);
+
+            System.out.print("¿Desea modificar las vacunas? (s/n): ");
+            if (scanner.nextLine().trim().toLowerCase().startsWith("s")) {
+                System.out.print("Ingrese las nuevas vacunas separadas por comas: ");
+                String[] vacunas = scanner.nextLine().split(",");
+                for (String vacuna : vacunas) {
+                    mascotaEditada.agregarVacuna(vacuna.trim());
                 }
+            } else {
+                mascotaExistente.getVacunas().forEach(mascotaEditada::agregarVacuna);
             }
-            
+
             return mascotaEditada;
-                             
+
         } catch (Exception e) {
-            System.out.println("❌ Error al solicitar datos de edición: " + e.getMessage());
+            System.out.println("❌ Error al editar la mascota: " + e.getMessage());
             return null;
         }
     }
-    
+
     @Override
     public void mostrarDetalles(Mascota mascota) {
-        System.out.println("╔══════════════════════════════════════╗");
-        System.out.println("║          DETALLES DE MASCOTA         ║");
-        System.out.println("╠══════════════════════════════════════╣");
-        System.out.println("║ ID: " + String.format("%-34s", getId(mascota)) + "║");
-        System.out.println("║ Nombre: " + String.format("%-30s", mascota.getNombre()) + "║");
-        System.out.println("║ Vacunada: " + String.format("%-28s", mascota.isVacunada() ? "Sí" : "No") + "║");
-        System.out.println("║ Vacunas: " + String.format("%-29s", mascota.getVacunas().toString()) + "║");
-        System.out.println("╚══════════════════════════════════════╝");
+        System.out.println("ID: " + mascota.getId());
+        System.out.println("Nombre: " + mascota.getNombre());
+        System.out.println("Raza: " + mascota.getRaza());
+        System.out.println("Vacunas: " + String.join(", ", mascota.getVacunas()));
     }
-    
+
     @Override
     public void mostrarLista() {
-        if (elementos.isEmpty()) {
-            System.out.println("❌ No hay mascotas registradas.");
-            return;
-        }
-        
-        System.out.println("\n╔════════════════════════════════════════════════════════════════╗");
-        System.out.println("║                        LISTA DE MASCOTAS                      ║");
-        System.out.println("╠════════════════════════════════════════════════════════════════╣");
-        System.out.println("║    ID    │         Nombre         │ Vacunada │    Vacunas    ║");
-        System.out.println("╠════════════════════════════════════════════════════════════════╣");
-        
+        System.out.println("\nLista de Mascotas:");
         for (Mascota mascota : elementos) {
-            String vacunas = mascota.getVacunas().size() > 0 ? 
-                String.valueOf(mascota.getVacunas().size()) : "0";
-            System.out.printf("║ %-8s │ %-22s │ %-8s │ %-13s ║%n", 
-                            mascota.getId(),
-                            mascota.getNombre(),
-                            mascota.isVacunada() ? "Sí" : "No",
-                            vacunas + " vacunas");
+            System.out.printf("ID: %-10s | Nombre: %-15s | Raza: %-15s | Vacunas: %s%n",
+                    mascota.getId(),
+                    mascota.getNombre(),
+                    mascota.getRaza(),
+                    String.join(", ", mascota.getVacunas()));
         }
-        System.out.println("╚════════════════════════════════════════════════════════════════╝");
     }
-    
+
+    @Override protected void mostrarEncabezadoAlta() {}
+    @Override protected void mostrarEncabezadoBaja() {}
+    @Override protected void mostrarEncabezadoEdicion() {}
+    @Override protected Object solicitarIdParaBaja() { return null; }
+    @Override protected Object solicitarIdParaEdicion() { return null; }
+
     @Override
-    protected void mostrarEncabezadoAlta() {
-        System.out.println("\n╔══════════════════════════════════════╗");
-        System.out.println("║           ALTA DE MASCOTA            ║");
-        System.out.println("╚══════════════════════════════════════╝");
+    protected String getId(Mascota mascota) {
+        return mascota.getId();
     }
-    
+
     @Override
-    protected void mostrarEncabezadoBaja() {
-        System.out.println("\n╔══════════════════════════════════════╗");
-        System.out.println("║           BAJA DE MASCOTA            ║");
-        System.out.println("╚══════════════════════════════════════╝");
+    protected boolean validarDatos(Mascota mascota) {
+        return mascota != null &&
+                mascota.getId() != null && !mascota.getId().isEmpty() &&
+                mascota.getNombre() != null && !mascota.getNombre().isEmpty();
     }
-    
+
     @Override
-    protected void mostrarEncabezadoEdicion() {
-        System.out.println("\n╔══════════════════════════════════════╗");
-        System.out.println("║         EDICIÓN DE MASCOTA           ║");
-        System.out.println("╚══════════════════════════════════════╝");
+    protected void notificarCambio(String tipoOperacion, Mascota elemento) {}
+
+    @Override
+    protected Object obtenerIdElemento(Mascota mascota) {
+        return mascota.getId();
     }
-    
+
     @Override
-    protected Object solicitarIdParaBaja() {
-        return leerTexto("➤ Ingrese el ID de la mascota a eliminar: ");
-    }
-    
-    @Override
-    protected Object solicitarIdParaEdicion() {
-        return leerTexto("➤ Ingrese el ID de la mascota a editar: ");
+    protected boolean coincideConCriterio(Mascota mascota, String criterio) {
+        return mascota.getNombre().toLowerCase().contains(criterio.toLowerCase()) ||
+                mascota.getId().toLowerCase().contains(criterio.toLowerCase());
     }
 }
+
+

@@ -1,6 +1,8 @@
 package modelo;
 
 import modelo.personas.Cliente;
+import modelo.personas.Veterinario;
+
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -2,7 +2,7 @@ package modelo.servicios;
 
 import interfaces.RevisionDeCitas;
 import modelo.Mascota;
-import modelo.Veterinario;
+import modelo.personas.Veterinario;
 import modelo.Asistente;
 import java.util.Date;
 import java.time.LocalDateTime;

@@ -13,12 +13,17 @@ public abstract class OperacionesCRUD<T> {
     
     // Operaciones CRUD principales
     public boolean alta(T elemento) {
-        if (elemento != null && validarDatos(elemento)) {
-            if (elementos.add(elemento)) {
-                notificarCambio("ALTA", elemento);
-                return true;
-            }
+        if (!validarDatos(elemento)) {
+            System.out.println("❌ Los datos no son válidos.");
+            return false;
         }
+        
+        if (elementos.add(elemento)) {
+            notificarCambio("ALTA", elemento);
+            // Aquí podrías agregar la persistencia de datos si es necesario
+            return true;
+        }
+        
         return false;
     }
     
@@ -86,7 +91,13 @@ public abstract class OperacionesCRUD<T> {
     public boolean existeById(Object id) {
         return buscarPorId(id).isPresent();
     }
-    
+
+    public abstract void alta();
+
+    public abstract void baja();
+
+    public abstract void edicion();
+
     // Métodos interactivos abstractos que deben implementar las clases hijas
     public abstract T solicitarDatosAlta();
     public abstract T solicitarDatosEdicion(T elementoExistente);

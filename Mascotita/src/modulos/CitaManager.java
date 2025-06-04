@@ -3,6 +3,8 @@ package modulos;
 import modelo.*;
 import interfaces.RevisionDeCitas;
 import excepciones.*;
+import modelo.personas.Veterinario;
+
 import java.util.*;
 import java.io.*;
 import java.time.LocalDateTime;

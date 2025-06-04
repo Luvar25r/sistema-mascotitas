@@ -2,7 +2,7 @@ package interfaces;
 
 import modelo.Asistente;
 import modelo.Mascota;
-import modelo.Veterinario;
+import modelo.personas.Veterinario;
 
 import java.time.LocalDateTime;
 import java.util.Date;

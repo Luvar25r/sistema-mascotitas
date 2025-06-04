@@ -1,6 +1,6 @@
 package utils;
 
-import modelo.Veterinario;
+import modelo.personas.Veterinario;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
