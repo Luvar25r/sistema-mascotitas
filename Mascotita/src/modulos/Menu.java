@@ -1,7 +1,11 @@
 package modulos;
 
 import utils.*;
+import modelo.Sucursal;
+import modelo.Zona;
 import java.util.Scanner;
+import java.util.List;
+import java.util.Arrays;
 
 
 /**
@@ -571,30 +575,61 @@ public class Menu {
      */
     private void menuSucursales() {
         int opcion;
-        
+        SucursalManager sucursalManager = new SucursalManager();
+
         do {
             System.out.println("\n=== ADMINISTRACIÓN DE SUCURSALES ===");
-            System.out.println("1. Gestión de sucursales");
-            System.out.println("2. Consultar sucursales");
+            System.out.println("1. Consultar todas las sucursales");
+            System.out.println("2. Buscar sucursal por código");
+            System.out.println("3. Buscar sucursales por zona");
             System.out.println("0. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
-            
+
             opcion = scanner.nextInt();
             scanner.nextLine(); // Consume el salto de línea
-            
+
             switch (opcion) {
                 case 1:
-                    submenuABE("Sucursal");
-                    // TODO: Implementar ModuloSucursales con métodos alta(), baja(), edicion()
+                    sucursalManager.mostrarLista();
+                    esperarTecla();
                     break;
                 case 2:
-                    // TODO: Implementar consulta de sucursales
-                    System.out.println("Consultando sucursales...");
+                    System.out.print("Ingrese el código de la sucursal: ");
+                    String codigo = scanner.nextLine();
+                    Sucursal sucursalPorCodigo = sucursalManager.buscarPorCodigo(codigo);
+                    if (sucursalPorCodigo != null) {
+                        sucursalManager.mostrarDetalles(sucursalPorCodigo);
+                    } else {
+                        System.out.println("❌ No se encontró ninguna sucursal con el código: " + codigo);
+                    }
+                    esperarTecla();
+                    break;
+                case 3:
+                    System.out.println("Zonas disponibles:");
+                    Zona[] zonas = Zona.values();
+                    for (int i = 0; i < zonas.length; i++) {
+                        System.out.println((i + 1) + ". " + zonas[i].getDescripcion());
+                    }
+                    System.out.print("Seleccione una zona (1-" + zonas.length + "): ");
+                    int seleccion = scanner.nextInt();
+                    scanner.nextLine(); // Consume el salto de línea
+
+                    if (seleccion >= 1 && seleccion <= zonas.length) {
+                        Zona zonaSeleccionada = zonas[seleccion - 1];
+                        List<Sucursal> sucursalesPorZona = sucursalManager.buscarPorZona(zonaSeleccionada);
+                        System.out.println("\nSucursales en " + zonaSeleccionada.getDescripcion() + ":");
+                        for (Sucursal sucursal : sucursalesPorZona) {
+                            System.out.println(" - " + sucursal.getNombre() + " (" + sucursal.getCodigoSucursal() + ")");
+                        }
+                    } else {
+                        System.out.println("❌ Opción no válida.");
+                    }
+                    esperarTecla();
                     break;
                 case 0:
                     break;
                 default:
-                    System.out.println("Opción no válida.");
+                    System.out.println("❌ Opción no válida.");
             }
         } while (opcion != 0);
     }
