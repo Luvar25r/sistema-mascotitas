@@ -54,8 +54,7 @@ public class Menu {
             System.out.println("2. Alta / Baja / Edición de Personal");
             System.out.println("3. Administración de Citas");
             System.out.println("4. Administración de Productos y Servicios");
-            System.out.println("5. Administración de Adopción de Mascotas");
-            System.out.println("6. Administración de Sucursales");
+            System.out.println("5. Administración de Sucursales");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
             
@@ -75,10 +74,12 @@ public class Menu {
                 case 4:
                     menuProductosServicios();
                     break;
-                case 5:
+                /*case 5:
                     menuAdopciones();
                     break;
-                case 6:
+
+                 */
+                case 5:
                     menuSucursales();
                     break;
                 case 0:
@@ -135,6 +136,7 @@ public class Menu {
             System.out.println("3. Edición de Cliente");
             System.out.println("4. Consultar Cliente");
             System.out.println("5. Listar todos los Clientes");
+            System.out.println("6. Cargar ejemplos de clientes ");
             System.out.println("0. Volver");
             System.out.print("Seleccione una opción: ");
             
@@ -158,6 +160,12 @@ public class Menu {
                     clienteCRUD.mostrarLista();
                     esperarTecla();
                     break;
+
+                case 6:
+                    // ← NUEVA FUNCIONALIDAD
+                    clienteCRUD.menuCargarEjemplos();
+                    esperarTecla();
+                    break;
                 case 0:
                     break;
                 default:
@@ -175,6 +183,7 @@ public class Menu {
             System.out.println("3. Edición de Mascota");
             System.out.println("4. Consultar Mascotas");
             System.out.println("5. Listar todos los Mascotas");
+            System.out.println("6. Cargar datos de ejemplo");
             System.out.println("0. Volver");
             System.out.print("Seleccione una opción: ");
 
@@ -198,6 +207,11 @@ public class Menu {
                     mascotaCRUD.mostrarLista();
                     esperarTecla();
                     break;
+                case 6:
+                    // ← NUEVA FUNCIONALIDAD
+                    mascotaCRUD.cargarDatosDeEjemplo();
+                    esperarTecla();
+                    break;
                 case 0:
                     break;
                 default:
@@ -215,6 +229,7 @@ public class Menu {
             System.out.println("3. Edición de Veterinario");
             System.out.println("4. Consultar Veterinario");
             System.out.println("5. Listar todos los Veterinarios");
+            System.out.println("6. Cargar datos de ejemplo");
             System.out.println("0. Volver");
             System.out.print("Seleccione una opción: ");
 
@@ -236,6 +251,10 @@ public class Menu {
                     break;
                 case 5:
                     veterinarioCRUD.mostrarLista();
+                    esperarTecla();
+                    break;
+                case 6:
+                    veterinarioCRUD.cargarDatosDeEjemplo();
                     esperarTecla();
                     break;
                 case 0:
@@ -375,6 +394,7 @@ public class Menu {
             System.out.println("3. Edición de Servicio");
             System.out.println("4. Consultar Servicio");
             System.out.println("5. Listar todos los Servicios");
+            System.out.println("6. Cargar datos de ejemplo");
             System.out.println("0. Volver");
             System.out.print("Seleccione una opción: ");
 
@@ -396,6 +416,10 @@ public class Menu {
                     break;
                 case 5:
                     servicioCRUD.mostrarLista();
+                    esperarTecla();
+                    break;
+                case 6:
+                    servicioCRUD.cargarDatosEjemplo();
                     esperarTecla();
                     break;
                 case 0:
@@ -576,12 +600,8 @@ public class Menu {
         
         do {
             System.out.println("\n=== ADMINISTRACIÓN DE PRODUCTOS Y SERVICIOS ===");
-            System.out.println("1. Pago de productos y/o servicios");
-            System.out.println("2. Gestión de productos");
-            System.out.println("3. Gestión de servicios");
-            System.out.println("4. Consultar productos disponibles");
-            System.out.println("5. Consultar servicios disponibles");
-            System.out.println("6. Registro de ventas pasadas");
+            System.out.println("1. Gestión de productos");
+            System.out.println("2. Gestión de servicios");
             System.out.println("0. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
             
@@ -589,28 +609,13 @@ public class Menu {
             scanner.nextLine(); // Consume el salto de línea
             
             switch (opcion) {
+
                 case 1:
-                    // TODO: Implementar ModuloPagos con generación de tarjeta (algoritmo de Luhn)
-                    System.out.println("Procesando pago...");
-                    break;
-                case 2:
                     submenuProducto();
 
                     break;
-                case 3:
+                case 2:
                     submenuServicio();
-                    break;
-                case 4:
-                    // TODO: Implementar consulta de productos con ordenamiento por ID y nombre
-                    System.out.println("Consultando productos...");
-                    break;
-                case 5:
-                    // TODO: Implementar consulta de servicios predeterminados
-                    System.out.println("Consultando servicios...");
-                    break;
-                case 6:
-                    // TODO: Implementar registro de ventas con ordenamiento A-Z/Z-A
-                    System.out.println("Consultando ventas pasadas...");
                     break;
                 case 0:
                     break;
@@ -719,47 +724,6 @@ public class Menu {
                     break;
                 default:
                     System.out.println("❌ Opción no válida.");
-            }
-        } while (opcion != 0);
-    }
-    
-    /**
-     * Submenu genérico para operaciones Alta/Baja/Edición
-     */
-    private void submenuABE(String entidad) {
-        int opcion;
-        
-        do {
-            System.out.println("\n=== GESTIÓN DE " + entidad.toUpperCase() + " ===");
-            System.out.println("1. Alta de " + entidad);
-            System.out.println("2. Baja de " + entidad);
-            System.out.println("3. Edición de " + entidad);
-            System.out.println("0. Volver");
-            System.out.print("Seleccione una opción: ");
-            
-            opcion = scanner.nextInt();
-            scanner.nextLine(); // Consume el salto de línea
-            
-            switch (opcion) {
-                case 1:
-                    System.out.println("Registrando nuevo " + entidad.toLowerCase() + "...");
-                    System.out.println("⚠️  Funcionalidad pendiente de implementar.");
-                    esperarTecla();
-                    break;
-                case 2:
-                    System.out.println("Eliminando " + entidad.toLowerCase() + "...");
-                    System.out.println("⚠️  Funcionalidad pendiente de implementar.");
-                    esperarTecla();
-                    break;
-                case 3:
-                    System.out.println("Editando " + entidad.toLowerCase() + "...");
-                    System.out.println("⚠️  Funcionalidad pendiente de implementar.");
-                    esperarTecla();
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
             }
         } while (opcion != 0);
     }

@@ -330,11 +330,22 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
                 System.out.println("❌ Opción no válida.");
         }
     }
-    
-    public Optional <Servicio> consultarPorNombre(String nombreServicio) {
-         nombreServicio = leerTexto("➤ Ingrese nombre del Servicio: ");
 
-        Optional<Servicio> servicioEncontrado = consultarPorNombre(nombreServicio);
+    /**
+     * Busca un servicio por su nombre (case-insensitive)
+     * @param nombreServicio Nombre del servicio a buscar
+     * @return Optional con el servicio si se encuentra
+     */
+    public Optional<Servicio> consultarPorNombre(String nombreServicio) {
+        if (nombreServicio == null || nombreServicio.trim().isEmpty()) {
+            System.out.println("❌ El nombre del servicio no puede estar vacío.");
+            return Optional.empty();
+        }
+
+        // Buscar en la lista de servicios (heredada de OperacionesCRUD)
+        Optional<Servicio> servicioEncontrado = elementos.stream()
+                .filter(servicio -> servicio.getNombre().equalsIgnoreCase(nombreServicio))
+                .findFirst();
 
         if (servicioEncontrado.isPresent()) {
             System.out.println("\n✅ Servicio encontrado:");
@@ -425,4 +436,206 @@ public class ServicioCRUD extends OperacionesCRUD<Servicio> {
             return false;
         }
     }
+
+    public void cargarDatosEjemplo() {
+        // Servicio de Baño
+        Servicio bano = new Servicio("Baño", "Baño completo con champú especial, secado y perfumado para mascotas", 25.00) {
+            @Override
+            public boolean veterinarioDisponible() {
+                return true;
+            }
+
+            @Override
+            public boolean asistenteDisponible(Asistente asistente, Date fechaHoraDate) {
+                return true;
+            }
+
+            @Override
+            public boolean mascotaVacunada(Mascota mascota) {
+                return true;
+            }
+
+            @Override
+            public boolean requiereVeterinario() {
+                return false;
+            }
+
+            @Override
+            public boolean requiereAsistente() {
+                return true;
+            }
+
+            @Override
+            public boolean requiereVacunas() {
+                return false;
+            }
+
+            @Override
+            public boolean revisarDisponibilidad(LocalDateTime fechaHora) {
+                return true;
+            }
+        };
+
+        // Servicio de Corte
+        Servicio corte = new Servicio("Corte", "Corte y arreglo de pelo profesional adaptado a la raza de la mascota", 35.00) {
+            @Override
+            public boolean veterinarioDisponible() {
+                return true;
+            }
+
+            @Override
+            public boolean asistenteDisponible(Asistente asistente, Date fechaHoraDate) {
+                return true;
+            }
+
+            @Override
+            public boolean mascotaVacunada(Mascota mascota) {
+                return true;
+            }
+
+            @Override
+            public boolean requiereVeterinario() {
+                return false;
+            }
+
+            @Override
+            public boolean requiereAsistente() {
+                return true;
+            }
+
+            @Override
+            public boolean requiereVacunas() {
+                return false;
+            }
+
+            @Override
+            public boolean revisarDisponibilidad(LocalDateTime fechaHora) {
+                return true;
+            }
+        };
+
+        // Servicio de Desparasitación
+        Servicio desparasitacion = new Servicio("Desparasitacion", "Tratamiento antiparasitario interno y externo con medicamentos especializados", 45.00) {
+            @Override
+            public boolean veterinarioDisponible() {
+                return true;
+            }
+
+            @Override
+            public boolean asistenteDisponible(Asistente asistente, Date fechaHoraDate) {
+                return true;
+            }
+
+            @Override
+            public boolean mascotaVacunada(Mascota mascota) {
+                return true;
+            }
+
+            @Override
+            public boolean requiereVeterinario() {
+                return true;
+            }
+
+            @Override
+            public boolean requiereAsistente() {
+                return false;
+            }
+
+            @Override
+            public boolean requiereVacunas() {
+                return false;
+            }
+
+            @Override
+            public boolean revisarDisponibilidad(LocalDateTime fechaHora) {
+                return true;
+            }
+        };
+
+        // Servicio de Esterilización
+        Servicio esterilizacion = new Servicio("Esterilizacion", "Cirugía de esterilización para control reproductivo, incluye pre y post operatorio", 150.00) {
+            @Override
+            public boolean veterinarioDisponible() {
+                return true;
+            }
+
+            @Override
+            public boolean asistenteDisponible(Asistente asistente, Date fechaHoraDate) {
+                return true;
+            }
+
+            @Override
+            public boolean mascotaVacunada(Mascota mascota) {
+                return mascota != null; // Requiere evaluación previa
+            }
+
+            @Override
+            public boolean requiereVeterinario() {
+                return true;
+            }
+
+            @Override
+            public boolean requiereAsistente() {
+                return true;
+            }
+
+            @Override
+            public boolean requiereVacunas() {
+                return true;
+            }
+
+            @Override
+            public boolean revisarDisponibilidad(LocalDateTime fechaHora) {
+                return true;
+            }
+        };
+
+        // Servicio de Vacunación
+        Servicio vacunacion = new Servicio("Vacunacion", "Aplicación de vacunas según calendario de inmunización y edad de la mascota", 30.00) {
+            @Override
+            public boolean veterinarioDisponible() {
+                return true;
+            }
+
+            @Override
+            public boolean asistenteDisponible(Asistente asistente, Date fechaHoraDate) {
+                return true;
+            }
+
+            @Override
+            public boolean mascotaVacunada(Mascota mascota) {
+                return true;
+            }
+
+            @Override
+            public boolean requiereVeterinario() {
+                return true;
+            }
+
+            @Override
+            public boolean requiereAsistente() {
+                return false;
+            }
+
+            @Override
+            public boolean requiereVacunas() {
+                return false;
+            }
+
+            @Override
+            public boolean revisarDisponibilidad(LocalDateTime fechaHora) {
+                return true;
+            }
+        };
+
+        // Agregar todos los servicios a la lista
+        elementos.add(bano);
+        elementos.add(corte);
+        elementos.add(desparasitacion);
+        elementos.add(esterilizacion);
+        elementos.add(vacunacion);
+
+        System.out.println("✅ Se han cargado 5 servicios de ejemplo en el sistema.");
+    }
+
 }

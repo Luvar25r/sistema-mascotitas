@@ -309,4 +309,79 @@ public class VeterinarioCRUD extends OperacionesCRUD<Veterinario> {
     protected Object solicitarIdParaEdicion() {
         return leerEntero("➤ Ingrese el número de cédula del veterinario a editar: ");
     }
+
+
+
+    /**
+     * Carga datos de ejemplo de veterinarios para pruebas iniciales.
+     */
+    public void cargarDatosDeEjemplo() {
+        try {
+            // Formato de fecha para los ejemplos
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+            // Veterinario 1
+            Date fechaNac1 = sdf.parse("15/04/1985");
+            Veterinario vet1 = new Veterinario(
+                    "Carlos",
+                    "Mendoza",
+                    "López",
+                    fechaNac1,
+                    "MELC850415HDFRTR09",
+                    1023456
+            );
+            elementos.add(vet1);
+
+            // Veterinario 2
+            Date fechaNac2 = sdf.parse("03/09/1990");
+            Veterinario vet2 = new Veterinario(
+                    "Laura",
+                    "Flores",
+                    fechaNac2,
+                    "FOLR900903MDFRDR09",
+                    7894561
+            );
+            elementos.add(vet2);
+
+            // Veterinario 3
+            Date fechaNac3 = sdf.parse("22/12/1980");
+            Veterinario vet3 = new Veterinario(
+                    "Jorge",
+                    "Ramírez",
+                    "Gómez",
+                    fechaNac3,
+                    "RAGJ801222HDFDMS09",
+                    6549873
+            );
+            elementos.add(vet3);
+
+            // Veterinario 4
+            Date fechaNac4 = sdf.parse("10/06/1995");
+            Veterinario vet4 = new Veterinario(
+                    "Ana",
+                    "Martínez",
+                    fechaNac4,
+                    "MARA950610MDFDNN09",
+                    3216548
+            );
+            elementos.add(vet4);
+
+            // Veterinario 5
+            Date fechaNac5 = sdf.parse("05/02/1988");
+            Veterinario vet5 = new Veterinario(
+                    "Sofía",
+                    "Castro",
+                    "Pérez",
+                    fechaNac5,
+                    "CAPS880205MDFDSR09",
+                    9876542
+            );
+            elementos.add(vet5);
+
+            System.out.println("✅ Se han cargado 5 veterinarios de ejemplo");
+
+        } catch (Exception e) {
+            System.out.println("❌ Error al cargar datos de ejemplo: " + e.getMessage());
+        }
+    }
 }

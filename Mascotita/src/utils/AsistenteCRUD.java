@@ -331,4 +331,6 @@ public class AsistenteCRUD extends OperacionesCRUD<Asistente> {
     protected Object solicitarIdParaEdicion() {
         return leerEntero("➤ Ingrese el ID del asistente a editar: ");
     }
+
+
 }

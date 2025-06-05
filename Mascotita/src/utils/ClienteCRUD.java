@@ -345,4 +345,107 @@ public class ClienteCRUD extends OperacionesCRUD<Cliente> {
     protected Object solicitarIdParaEdicion() {
         return leerEntero("➤ Ingrese el número de cliente a editar: ");
     }
+
+    // Método para agregar en la clase ClienteCRUD
+    public void cargarDatosDeEjemplo() {
+        System.out.println("\n╔══════════════════════════════════════╗");
+        System.out.println("║       CARGANDO DATOS DE EJEMPLO      ║");
+        System.out.println("╚══════════════════════════════════════╝");
+
+        try {
+            // Cliente 1
+            Date fecha1 = formatoFecha.parse("15/03/1990");
+            Cliente cliente1 = new Cliente(
+                    "María Elena",
+                    "García",
+                    "López",
+                    fecha1,
+                    "GALM900315MDFPPR01",
+                    "55-1234-5678",
+                    "maria.garcia@email.com",
+                    true
+            );
+
+            // Cliente 2
+            Date fecha2 = formatoFecha.parse("22/07/1985");
+            Cliente cliente2 = new Cliente(
+                    "Juan Carlos",
+                    "Rodríguez",
+                    "Hernández",
+                    fecha2,
+                    "ROHJ850722HDFRNN05",
+                    "55-2345-6789",
+                    "juan.rodriguez@email.com",
+                    false
+            );
+
+            // Cliente 3
+            Date fecha3 = formatoFecha.parse("08/12/1992");
+            Cliente cliente3 = new Cliente(
+                    "Ana Sofía",
+                    "Martínez",
+                    "Flores",
+                    fecha3,
+                    "MAFA921208MDFRLNN08",
+                    "55-3456-7890",
+                    "ana.martinez@email.com",
+                    true
+            );
+
+            // Cliente 4
+            Date fecha4 = formatoFecha.parse("30/05/1988");
+            Cliente cliente4 = new Cliente(
+                    "Carlos Alberto",
+                    "Sánchez",
+                    "Morales",
+                    fecha4,
+                    "SAMC880530HDFNRL02",
+                    "55-4567-8901",
+                    "carlos.sanchez@email.com",
+                    false
+            );
+
+            // Cliente 5
+            Date fecha5 = formatoFecha.parse("14/09/1995");
+            Cliente cliente5 = new Cliente(
+                    "Laura Patricia",
+                    "Jiménez",
+                    null, // Sin apellido materno
+                    fecha5,
+                    "JILL950914MDFMRR04",
+                    "55-5678-9012",
+                    "laura.jimenez@email.com",
+                    true
+            );
+
+            // Agregar los clientes a la lista
+            elementos.add(cliente1);
+            elementos.add(cliente2);
+            elementos.add(cliente3);
+            elementos.add(cliente4);
+            elementos.add(cliente5);
+
+            System.out.println("✅ Se han cargado 5 clientes de ejemplo exitosamente:");
+            System.out.println("   • María Elena García López (Con mascota)");
+            System.out.println("   • Juan Carlos Rodríguez Hernández (Sin mascota)");
+            System.out.println("   • Ana Sofía Martínez Flores (Con mascota)");
+            System.out.println("   • Carlos Alberto Sánchez Morales (Sin mascota)");
+            System.out.println("   • Laura Patricia Jiménez (Con mascota)");
+
+        } catch (ParseException e) {
+            System.out.println("❌ Error al cargar datos de ejemplo: " + e.getMessage());
+        }
+    }
+
+    // Método alternativo para usar en el menú principal
+    public void menuCargarEjemplos() {
+        if (!elementos.isEmpty()) {
+            String respuesta = leerTexto("⚠️  Ya existen clientes en el sistema. ¿Desea agregar los ejemplos de todas formas? (s/n): ");
+            if (!respuesta.toLowerCase().startsWith("s")) {
+                System.out.println("❌ Operación cancelada.");
+                return;
+            }
+        }
+        cargarDatosDeEjemplo();
+    }
 }

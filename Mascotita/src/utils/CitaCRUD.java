@@ -418,33 +418,46 @@ public class CitaCRUD extends OperacionesCRUD<Cita> {
         }
 
         List<Servicio> serviciosSeleccionados = new ArrayList<>();
+        double costoTotal = 0;
 
         while (true) {
             servicioCRUD.mostrarLista();
             System.out.println("\nServicios seleccionados: " + serviciosSeleccionados.size());
+            System.out.println("Costo acumulado: $" + costoTotal);
+            String opcion = leerTexto("➤ Ingrese nombre del servicio ('0' para terminar): ");
 
-            String opcion = leerTexto("➤ Ingrese nombre del servicio (0 para terminar): ");
-
-            if (opcion.isEmpty()) {
+            if ("0".equals(opcion)) {
                 break;
             }
 
+            if (opcion.trim().isEmpty()) {
+                System.out.println("❌ No puede estar vacío. Ingrese un nombre válido o '0' para salir.");
+                continue;
+            }
+
             Optional<Servicio> servicio = servicioCRUD.consultarPorNombre(opcion);
+
             if (servicio.isPresent()) {
                 if (!serviciosSeleccionados.contains(servicio.get())) {
                     serviciosSeleccionados.add(servicio.get());
-                    System.out.println("✅ Servicio agregado: " + servicio.get().getNombre());
+                    costoTotal += servicio.get().getPrecio(); // ✅ Acumular precio
+                    System.out.println("✅ Servicio agregado: " + servicio.get().getNombre() + " | Costo: $" + servicio.get().getPrecio());
                 } else {
                     System.out.println("❌ El servicio ya está seleccionado.");
                 }
             } else {
-                System.out.println("❌ Servicio no encontrado.");
+                System.out.println("❌ Servicio no encontrado. Intente nuevamente.");
             }
         }
 
+        if (serviciosSeleccionados.isEmpty()) {
+            System.out.println("❌ Debe seleccionar al menos un servicio.");
+            return null;
+        }
+
+        System.out.println("💰 Total de servicios seleccionados: $" + costoTotal);
         return serviciosSeleccionados;
     }
-
     private Veterinario seleccionarVeterinario() {
         if (veterinarioCRUD == null) {
             System.out.println("⚠️ Sistema de veterinarios no disponible.");

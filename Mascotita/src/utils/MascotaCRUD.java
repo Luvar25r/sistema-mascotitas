@@ -13,37 +13,6 @@ public class MascotaCRUD extends OperacionesCRUD<Mascota> {
         this.scanner = new Scanner(System.in);
     }
 
-    public void menuMascotas() {
-        int opcion;
-        do {
-            System.out.println("\n╔══════════════════════════════════════╗");
-            System.out.println("║      ADMINISTRACIÓN DE MASCOTAS      ║");
-            System.out.println("╠══════════════════════════════════════╣");
-            System.out.println("║ 1. Alta de Mascota                   ║");
-            System.out.println("║ 2. Baja de Mascota                   ║");
-            System.out.println("║ 3. Edición de Mascota                ║");
-            System.out.println("║ 4. Consultar Mascotas                ║");
-            System.out.println("║ 0. Volver al menú principal          ║");
-            System.out.println("╚══════════════════════════════════════╝");
-
-            try {
-                System.out.print("Seleccione una opción: ");
-                opcion = Integer.parseInt(scanner.nextLine().trim());
-
-                switch (opcion) {
-                    case 1 -> alta();
-                    case 2 -> baja();
-                    case 3 -> edicion();
-                    case 4 -> consulta();
-                    case 0 -> System.out.println("Volviendo al menú principal...");
-                    default -> System.out.println("❌ Opción no válida");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("❌ Por favor, ingrese un número válido");
-                opcion = -1;
-            }
-        } while (opcion != 0);
-    }
 
     @Override
     public void alta() {
@@ -251,6 +220,60 @@ public class MascotaCRUD extends OperacionesCRUD<Mascota> {
         return mascota.getNombre().toLowerCase().contains(criterio.toLowerCase()) ||
                 mascota.getId().toLowerCase().contains(criterio.toLowerCase());
     }
+
+
+    /**
+     * Método para cargar 5 datos de ejemplo de mascotas
+     */
+    public void cargarDatosDeEjemplo() {
+        try {
+            // Mascota 1: Perro Golden Retriever
+            Mascota mascota1 = new Mascota("1", "Max");
+            mascota1.setRaza("Golden Retriever");
+            mascota1.agregarVacuna("Rabia");
+            mascota1.agregarVacuna("Parvovirus");
+            mascota1.agregarVacuna("Moquillo");
+            elementos.add(mascota1);
+
+            // Mascota 2: Gato Persa
+            Mascota mascota2 = new Mascota("2", "Luna");
+            mascota2.setRaza("Persa");
+            mascota2.agregarVacuna("Triple Felina");
+            mascota2.agregarVacuna("Leucemia Felina");
+            elementos.add(mascota2);
+
+            // Mascota 3: Perro Labrador
+            Mascota mascota3 = new Mascota("3", "Rocky");
+            mascota3.setRaza("Labrador");
+            mascota3.agregarVacuna("Rabia");
+            mascota3.agregarVacuna("Hepatitis");
+            mascota3.agregarVacuna("Parainfluenza");
+            elementos.add(mascota3);
+
+            // Mascota 4: Gato Siamés
+            Mascota mascota4 = new Mascota("4", "Mimi");
+            mascota4.setRaza("Siamés");
+            mascota4.agregarVacuna("Triple Felina");
+            mascota4.agregarVacuna("Rabia");
+            elementos.add(mascota4);
+
+            // Mascota 5: Perro Pastor Alemán
+            Mascota mascota5 = new Mascota("5", "Zeus");
+            mascota5.setRaza("Pastor Alemán");
+            mascota5.agregarVacuna("Rabia");
+            mascota5.agregarVacuna("Parvovirus");
+            mascota5.agregarVacuna("Moquillo");
+            mascota5.agregarVacuna("Coronavirus");
+            elementos.add(mascota5);
+
+            System.out.println("✅ Se han cargado 5 mascotas de ejemplo");
+
+        } catch (Exception e) {
+            System.out.println("❌ Error al cargar datos de ejemplo: " + e.getMessage());
+        }
+    }
+
+
 }
 
 
